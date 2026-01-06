@@ -1,191 +1,229 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Buku - Perpustakaan Digital')
-@section('page-title', 'Daftar Buku')
-
 @section('content')
-    <div class="space-y-6">
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 sm:mb-8">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Daftar Buku</h1>
-                <p class="text-gray-600">Kelola koleksi buku perpustakaan</p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Daftar Buku</h1>
+                <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Kelola koleksi buku perpustakaan</p>
             </div>
-            <a href="{{ route('books.create') }}" class="w-full sm:w-auto bg-sky-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center" style="border-bottom: 4px solid #0284c7;">
+            <a href="{{ route('books.create') }}"
+                class="w-full sm:w-auto bg-sky-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center"
+                style="border-bottom: 4px solid #0284c7;">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Tambah Buku
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Tambah Buku
             </a>
         </div>
 
-        <!-- Search Card -->
-        <div class="bg-white rounded-lg shadow-md border-2 border-gray-100 p-6">
-            <form method="GET" action="{{ route('books.index') }}" class="flex gap-4">
-                <div class="flex-1">
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Cari berdasarkan judul, penulis, ISBN, atau kategori..."
-                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all">
-                </div>
-                <button type="submit" class="btn-primary">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Advanced Search & Filter -->
+        <div class="bg-white sm:rounded-xl shadow-sm border-0 sm:border border-gray-100 p-4 mb-6">
+            <form method="GET" action="{{ route('books.index') }}" class="space-y-4">
+                <!-- Search Bar -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        Cari
-                    </span>
-                </button>
-                @if(request('search'))
-                    <a href="{{ route('books.index') }}" class="btn-secondary">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    </div>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        class="block w-full pl-10 pr-3 py-2 sm:py-3 border-2 border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-400 sm:text-sm transition duration-150 ease-in-out"
+                        placeholder="Cari berdasarkan judul, penulis, ISBN, atau penerbit...">
+                </div>
+
+                <!-- Filters -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <!-- Category Select -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Kategori</label>
+                        <select name="category_id"
+                            class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md shadow-sm">
+                            <option value="">Semua Kategori</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Year Select -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Tahun Terbit</label>
+                        <select name="year"
+                            class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md shadow-sm">
+                            <option value="">Semua Tahun</option>
+                            @foreach($years as $year)
+                                <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
+                                    {{ $year }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Availability Select -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Ketersediaan</label>
+                        <select name="available"
+                            class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md shadow-sm">
+                            <option value="">Semua Status</option>
+                            <option value="true" {{ request('available') === 'true' ? 'selected' : '' }}>Tersedia</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort By -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Urutkan</label>
+                        <div class="flex gap-2">
+                            <select name="sort"
+                                class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md shadow-sm">
+                                <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Terbaru
+                                </option>
+                                <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>Judul</option>
+                                <option value="author" {{ request('sort') == 'author' ? 'selected' : '' }}>Penulis</option>
+                                <option value="stock" {{ request('sort') == 'stock' ? 'selected' : '' }}>Stok</option>
+                            </select>
+                            <select name="order"
+                                class="block w-24 pl-3 pr-8 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md shadow-sm">
+                                <option value="desc" {{ request('order') == 'desc' ? 'selected' : '' }}>Z-A</option>
+                                <option value="asc" {{ request('order') == 'asc' ? 'selected' : '' }}>A-Z</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-2">
+                    @if(request()->anyFilled(['search', 'category_id', 'year', 'available', 'sort']))
+                        <a href="{{ route('books.index') }}"
+                            class="w-full sm:w-auto bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors inline-flex items-center justify-center border border-gray-300">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                            Reset
-                        </span>
-                    </a>
-                @endif
+                            Reset Filter
+                        </a>
+                    @endif
+                    <button type="submit"
+                        class="w-full sm:w-auto bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        style="border-bottom: 3px solid #1f2937;">
+                        <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        Terapkan Filter
+                    </button>
+                </div>
             </form>
         </div>
 
-        <!-- Table Card -->
-        <div class="bg-white rounded-lg shadow-md border-2 border-gray-100 overflow-hidden">
-            <div class="px-6 py-4 border-b-2 border-gray-100">
-                <h2 class="text-lg font-bold text-gray-900">
-                    @if(request('search'))
-                        Hasil Pencarian: "{{ request('search') }}"
-                    @else
-                        Semua Buku ({{ $books->total() }})
-                    @endif
-                </h2>
-            </div>
-
+        <!-- Books Grid/Table -->
+        <div class="bg-white sm:rounded-xl shadow-sm border-0 sm:border border-gray-100 overflow-hidden">
             <div class="overflow-x-auto -mx-4 sm:mx-0">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                Buku</th>
-                            <th
-                                class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden md:table-cell">
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Buku
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Penulis</th>
-                            <th
-                                class="px-4 py-4 text-center text-xs font-bold text-gray-700 uppercase tracking-wider hidden lg:table-cell">
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Kategori</th>
-                            <th
-                                class="px-4 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden xl:table-cell">
-                                ISBN</th>
-                            <th class="px-4 py-4 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                            <th scope="col"
+                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Stok</th>
-                            <th class="px-4 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                Aksi</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($books as $book)
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-4 py-4">
-                                    <div>
-                                        <p class="font-semibold text-gray-900 text-sm">{{ $book->title }}</p>
-                                        @if($book->publisher)
-                                            <p class="text-xs text-gray-500">{{ $book->publisher }}</p>
-                                        @endif
-                                        <!-- Show author on mobile -->
-                                        <p class="text-xs text-gray-600 md:hidden mt-1">{{ $book->author }}</p>
-                                        <!-- Show category on mobile/tablet -->
-                                        @if($book->category)
-                                            <div class="mt-1 lg:hidden">
-                                                <span
-                                                    class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-sky-100 text-sky-700">
-                                                    {{ $book->category }}
-                                                </span>
-                                            </div>
-                                        @endif
+                            <tr class="hover:bg-gray-50 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="flex-shrink-0 h-12 w-10 bg-gray-200 rounded flex items-center justify-center text-gray-400">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div
+                                                class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                                                {{ $book->title }}</div>
+                                            <div class="text-xs text-gray-500">{{ $book->isbn ?? 'No ISBN' }}</div>
+                                        </div>
                                     </div>
                                 </td>
-                                <td class="px-4 py-4 hidden md:table-cell">
-                                    <p class="text-sm font-medium text-gray-900">{{ $book->author }}</p>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ $book->author }}</div>
+                                    <div class="text-xs text-gray-500">{{ $book->publication_year }}</div>
                                 </td>
-                                <td class="px-4 py-4 hidden lg:table-cell text-center">
-                                    @if($book->category)
-                                        <span
-                                            class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-700 whitespace-nowrap min-w-[80px] text-center">
-                                            {{ $book->category }}
-                                        </span>
-                                    @else
-                                        <span class="text-gray-400 text-sm">-</span>
-                                    @endif
-                                </td>
-                                <td class="px-4 py-4 hidden xl:table-cell">
-                                    <p class="text-xs text-gray-600 font-mono">{{ $book->isbn ?? '-' }}</p>
-                                </td>
-                                <td class="px-4 py-4 text-center">
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <span
-                                        class="inline-block px-2.5 py-1 rounded-full text-xs font-bold whitespace-nowrap
-                                                                {{ $book->stock == 0 ? 'bg-pink-100 text-pink-700' : ($book->stock <= 2 ? 'bg-amber-100 text-amber-700' : 'bg-teal-100 text-teal-700') }}">
-                                        {{ $book->stock }}
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        {{ $book->categoryData->name ?? ($book->category ?? 'Umum') }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center justify-end space-x-2">
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    @if($book->stock > 0)
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            {{ $book->stock }} Tersedia
+                                        </span>
+                                    @else
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            Habis
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex justify-end space-x-2">
                                         <a href="{{ route('books.show', $book) }}"
-                                            class="inline-flex items-center px-3 py-2 bg-sky-500 text-white text-sm font-bold rounded-lg hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                                            style="border-bottom: 3px solid #0284c7;">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                            Detail
-                                        </a>
+                                            class="text-sky-600 hover:text-sky-900 bg-sky-50 hover:bg-sky-100 px-3 py-1 rounded transition-colors">Detail</a>
                                         <a href="{{ route('books.edit', $book) }}"
-                                            class="inline-flex items-center px-3 py-2 bg-teal-500 text-white text-sm font-bold rounded-lg hover:bg-teal-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                                            style="border-bottom: 3px solid #0d9488;">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                            Edit
-                                        </a>
-                                        <form action="{{ route('books.destroy', $book) }}" method="POST" class="inline"
+                                            class="text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 px-3 py-1 rounded transition-colors">Edit</a>
+                                        <form action="{{ route('books.destroy', $book) }}" method="POST" class="inline-block"
                                             onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="inline-flex items-center px-3 py-2 bg-pink-500 text-white text-sm font-bold rounded-lg hover:bg-pink-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                                                style="border-bottom: 3px solid #db2777;">
-                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                                Hapus
-                                            </button>
+                                                class="text-pink-600 hover:text-pink-900 bg-pink-50 hover:bg-pink-100 px-3 py-1 rounded transition-colors">Hapus</button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-16 text-center">
-                                    <div class="flex flex-col items-center">
-                                        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="mt-2 text-base font-medium text-gray-900">Tidak ada buku ditemukan</p>
+                                    <p class="mt-1 text-sm text-gray-500">Coba ubah filter pencarian Anda atau tambahkan buku
+                                        baru.</p>
+                                    <div class="mt-6">
+                                        <a href="{{ route('books.create') }}"
+                                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                    clip-rule="evenodd" />
                                             </svg>
-                                        </div>
-                                        @if(request('search'))
-                                            <p class="text-gray-600 font-medium mb-2">Tidak ada buku yang ditemukan</p>
-                                            <p class="text-gray-500 text-sm">dengan kata kunci "{{ request('search') }}"</p>
-                                        @else
-                                            <p class="text-gray-600 font-medium mb-4">Belum ada buku</p>
-                                            <a href="{{ route('books.create') }}" class="btn-primary btn-sm">
-                                                Tambah Buku Pertama
-                                            </a>
-                                        @endif
+                                            Tambah Buku Baru
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -193,10 +231,8 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Pagination -->
             @if($books->hasPages())
-                <div class="px-6 py-4 border-t-2 border-gray-100 bg-gray-50">
+                <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
                     {{ $books->links() }}
                 </div>
             @endif

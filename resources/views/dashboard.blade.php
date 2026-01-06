@@ -72,6 +72,22 @@
             </div>
         </div>
 
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow-md border-2 border-gray-100 p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Tren Peminjaman (7 Hari Terakhir)</h3>
+                <div class="relative h-64">
+                    <canvas id="loanChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md border-2 border-gray-100 p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Populasi Buku per Kategori</h3>
+                <div class="relative h-64">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Content Sections -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Recent Loans -->
@@ -237,4 +253,100 @@
             </a>
         </div>
     </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Data from Controller
+            const loanLabels = {!! json_encode($loanChartLabels) !!};
+            const loanData = {!! json_encode($loanChartData) !!};
+
+            const categoryLabels = {!! json_encode($categoryChartLabels) !!};
+            const categoryData = {!! json_encode($categoryChartData) !!};
+
+            // 1. Loan Trend Chart
+            const ctxLoan = document.getElementById('loanChart').getContext('2d');
+            new Chart(ctxLoan, {
+                type: 'line',
+                data: {
+                    labels: loanLabels,
+                    datasets: [{
+                        label: 'Jumlah Peminjaman',
+                        data: loanData,
+                        borderColor: '#0ea5e9', // Sky-500
+                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#0ea5e9',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            },
+                            grid: {
+                                borderDash: [2, 2]
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Category Distribution Chart
+            const ctxCategory = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctxCategory, {
+                type: 'doughnut',
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        data: categoryData,
+                        backgroundColor: [
+                            '#0ea5e9', // Sky
+                            '#14b8a6', // Teal
+                            '#f43f5e', // Rose
+                            '#f59e0b', // Amber
+                            '#8b5cf6', // Violet
+                            '#64748b'  // Slate
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        });
+    </script>
 @endsection

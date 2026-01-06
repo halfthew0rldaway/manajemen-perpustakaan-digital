@@ -205,7 +205,38 @@ Berdasarkan variasi NIM, fitur tambahan yang diterapkan adalah sebagai berikut:
 
 Seluruh fitur variasi di atas diimplementasikan langsung di dalam logic backend dan divalidasi di level controller serta database.
 
-## 10. Development Best Practices
+## 10. Fitur Pengembangan Lanjutan (Update Terbaru)
+
+Berikut adalah fitur-fitur tambahan yang telah diimplementasikan untuk meningkatkan fungsionalitas dan UX aplikasi:
+
+### Manajemen Kategori Modern
+* Migrasi sistem kategori dari kolom teks sederhana menjadi tabel relasional `categories`.
+* Fitur **Sinkronisasi Otomatis** untuk data lama.
+* CRUD Kategori lengkap.
+
+### Pencarian & Filter Canggih
+* Multi-column search (Judul, Penulis, ISBN, Penerbit).
+* Filter kombinasi: Kategori + Tahun + Ketersediaan.
+* Sorting data (A-Z, Terbaru, Stok).
+
+### Laporan & Export
+* **Export CSV** untuk Laporan Harian dan Keterlambatan.
+* Kalkulasi denda real-time pada laporan.
+* Navigasi laporan yang lebih intuitif.
+
+### UI/UX Polish
+* Notifikasi sistem (Toast) yang elegan.
+* Animasi transisi yang halus.
+* Konsistensi desain tombol dan kartu.
+
+### Setup Data Baru
+Untuk melakukan sinkronisasi kategori lama dan generate dummy data baru:
+
+```bash
+php artisan app:sync-categories --dummy
+```
+
+## 11. Development Best Practices
 
 1. Clone the repository
 2. Install dependencies using Composer and NPM
@@ -215,7 +246,7 @@ Seluruh fitur variasi di atas diimplementasikan langsung di dalam logic backend 
 
 The application is now ready to run locally.
 
-## 11. Limitations
+## 12. Limitations
 
 * Designed for local execution only
 * No external API calls
@@ -223,7 +254,7 @@ The application is now ready to run locally.
 
 These limitations are intentional and aligned with the scope of the UAS project.
 
-## 12. Conclusion
+## 13. Conclusion
 
 This project is built to demonstrate not only functional correctness but also **professional-level code quality**, **secure logic**, and **modern UI/UX standards**. It reflects how a real-world Laravel application should be structured, even within an academic environment.
 

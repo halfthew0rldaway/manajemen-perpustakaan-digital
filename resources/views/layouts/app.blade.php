@@ -243,6 +243,48 @@
             transition: color 0.2s ease;
         }
 
+        @media print {
+            /* Hide UI elements */
+            .no-print, 
+            aside, 
+            nav[class*="fixed"], /* Hide fixed navbar */
+            button, 
+            a[href*="export"], 
+            form,
+            .bg-sky-500.text-white /* Hide floating buttons */
+            { 
+                display: none !important; 
+            }
+
+            /* Reset layout */
+            body, #app, main { 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                width: 100% !important; 
+                overflow: visible !important;
+                background: white !important;
+            }
+
+            /* Main content area reset */
+            .ml-64 { margin-left: 0 !important; }
+            
+            /* Table Styling for Print */
+            table { 
+                border-collapse: collapse !important; 
+                width: 100% !important; 
+                font-size: 12px !important;
+            }
+            th, td { 
+                border: 1px solid #777 !important; 
+                padding: 6px !important; 
+                color: black !important;
+            }
+            .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; border: none !important; }
+            
+            /* Header adjustments */
+            h1 { font-size: 20px !important; margin-bottom: 10px !important; color: black !important; }
+            p { font-size: 12px !important; color: #444 !important; }
+        }
         /* Card Hover Animation */
         .card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -394,6 +436,17 @@
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                         <span x-show="sidebarOpen" x-transition class="font-medium whitespace-nowrap">Buku</span>
+                    </a>
+
+                    <!-- Kategori -->
+                    <a href="{{ route('categories.index') }}"
+                        class="flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('categories.*') ? 'bg-sky-500 shadow-md' : 'hover:bg-sky-500' }}"
+                        :title="!sidebarOpen ? 'Kategori' : ''">
+                        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                        <span x-show="sidebarOpen" x-transition class="font-medium whitespace-nowrap">Kategori</span>
                     </a>
 
                     <!-- Peminjaman -->
@@ -645,6 +698,7 @@
             </div>
         </div>
     @endauth
+    @include('components.notifications')
 </body>
 
 </html>

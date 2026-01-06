@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ReportController;
 
 // Root route - redirect based on auth status
 Route::get('/', function () {
@@ -28,8 +30,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Reports
-    Route::get('/reports/daily', [DashboardController::class, 'dailyReport'])->name('reports.daily');
-    Route::get('/reports/overdue', [DashboardController::class, 'overdueReport'])->name('reports.overdue');
+    Route::get('/reports/daily', [ReportController::class, 'daily'])->name('reports.daily');
+    Route::get('/reports/daily/export', [ReportController::class, 'exportDaily'])->name('reports.daily.export');
+
+    Route::get('/reports/overdue', [ReportController::class, 'overdue'])->name('reports.overdue');
+    Route::get('/reports/overdue/export', [ReportController::class, 'exportOverdue'])->name('reports.overdue.export');
+
+    // Categories
+    Route::resource('categories', CategoryController::class);
 
     // Books
     Route::resource('books', BookController::class);

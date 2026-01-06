@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -11,22 +13,56 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $query = \App\Models\Book::query();
+        $query = Book::with('categoryData'); // Eager load category
 
-        // Search functionality
-        if ($request->has('search')) {
-            $search = $request->search;
+        // Search functionality (Advanced)
+        if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                     ->orWhere('author', 'like', "%{$search}%")
                     ->orWhere('isbn', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%");
+                    ->orWhere('publisher', 'like', "%{$search}%");
             });
         }
 
-        $books = $query->latest()->paginate(10);
+        // Category Filter
+        if ($categoryId = $request->get('category_id')) {
+            $query->where('category_id', $categoryId);
+        }
 
-        return view('books.index', compact('books'));
+        // Year Filter
+        if ($year = $request->get('year')) {
+            $query->where('publication_year', $year);
+        }
+
+        // Availability Filter
+        if ($request->get('available') === 'true') {
+            $query->where('stock', '>', 0);
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'created_at');
+        $order = $request->get('order', 'desc');
+
+        // Validate sort columns to prevent SQL injection
+        $allowedSorts = ['title', 'author', 'publication_year', 'stock', 'created_at'];
+        if (in_array($sort, $allowedSorts)) {
+            $query->orderBy($sort, $order);
+        } else {
+            $query->latest();
+        }
+
+        $books = $query->paginate(10)->withQueryString();
+        $categories = Category::orderBy('name')->get();
+
+        // Get unique years for filter
+        $years = Book::select('publication_year')
+            ->whereNotNull('publication_year')
+            ->distinct()
+            ->orderBy('publication_year', 'desc')
+            ->pluck('publication_year');
+
+        return view('books.index', compact('books', 'categories', 'years'));
     }
 
     /**
@@ -34,7 +70,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        $categories = Category::orderBy('name')->get();
+        return view('books.create', compact('categories'));
     }
 
     /**
@@ -48,12 +85,12 @@ class BookController extends Controller
             'publisher' => 'nullable|string|max:255',
             'publication_year' => 'nullable|integer|min:1900|max:' . date('Y'),
             'isbn' => 'nullable|string|unique:books,isbn',
-            'category' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id', // Update validation
             'description' => 'nullable|string',
-            'stock' => 'required|integer|min:2', // Minimal 2 untuk buku baru
+            'stock' => 'required|integer|min:1',
         ]);
 
-        \App\Models\Book::create($validated);
+        Book::create($validated);
 
         return redirect()->route('books.index')
             ->with('success', 'Buku berhasil ditambahkan!');
@@ -62,9 +99,10 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(\App\Models\Book $book)
+    public function show(Book $book)
     {
         $book->load([
+            'categoryData',
             'loans' => function ($query) {
                 $query->latest()->take(10);
             }
@@ -76,15 +114,16 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(\App\Models\Book $book)
+    public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $categories = Category::orderBy('name')->get();
+        return view('books.edit', compact('book', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, \App\Models\Book $book)
+    public function update(Request $request, Book $book)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -92,9 +131,9 @@ class BookController extends Controller
             'publisher' => 'nullable|string|max:255',
             'publication_year' => 'nullable|integer|min:1900|max:' . date('Y'),
             'isbn' => 'nullable|string|unique:books,isbn,' . $book->id,
-            'category' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id', // Update validation
             'description' => 'nullable|string',
-            'stock' => 'required|integer|min:0', // Untuk update, boleh 0
+            'stock' => 'required|integer|min:0',
         ]);
 
         $book->update($validated);
@@ -106,7 +145,7 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(\App\Models\Book $book)
+    public function destroy(Book $book)
     {
         // Check if book has active loans
         if ($book->activeLoans()->count() > 0) {

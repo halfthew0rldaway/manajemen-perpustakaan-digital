@@ -23,12 +23,34 @@
                 <button type="submit"
                     class="bg-sky-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     style="border-bottom: 3px solid #0284c7;">
-                    <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>Tampilkan
+                    <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>Tampilkan
                 </button>
+                <button type="button" onclick="window.print()"
+                    class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    style="border-bottom: 3px solid #991b1b;">
+                    <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>Cetak PDF
+                </button>
+                <a href="{{ route('reports.daily.export', ['date' => $date]) }}"
+                    class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    style="border-bottom: 3px solid #166534;">
+                    <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>Export Excel
+                </a>
                 <a href="{{ route('reports.overdue') }}"
                     class="bg-pink-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-pink-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     style="border-bottom: 3px solid #db2777;">
-                    <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Lihat Keterlambatan
+                    <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>Keterlambatan
                 </a>
             </form>
         </div>
@@ -93,7 +115,9 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($loans as $index => $loan)
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    {{ $loans instanceof \Illuminate\Pagination\LengthAwarePaginator ? $loans->firstItem() + $index : $index + 1 }}
+                                </td>
                                 <td class="px-6 py-4">
                                     <p class="font-medium text-gray-900">{{ $loan->user->name }}</p>
                                     <p class="text-sm text-gray-500">{{ $loan->user->email }}</p>
@@ -129,6 +153,11 @@
                     </tbody>
                 </table>
             </div>
+            @if($loans instanceof \Illuminate\Pagination\LengthAwarePaginator && $loans->hasPages())
+                <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                    {{ $loans->appends(['date' => $date])->links() }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection

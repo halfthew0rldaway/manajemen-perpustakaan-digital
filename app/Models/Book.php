@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Book extends Model
 {
@@ -12,10 +13,15 @@ class Book extends Model
         'publisher',
         'publication_year',
         'isbn',
-        'category',
+        'category_id', // Changed from category string to relation
         'description',
         'stock',
     ];
+
+    public function categoryData(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
     /**
      * Get all loans for this book

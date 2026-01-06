@@ -30,6 +30,25 @@ class DashboardController extends Controller
         // Out of stock books
         $outOfStockBooks = \App\Models\Book::where('stock', 0)->count();
 
+        // CHART DATA 1: Loans Last 7 Days
+        $loanChartData = [];
+        $loanChartLabels = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $count = \App\Models\Loan::whereDate('loan_date', $date->format('Y-m-d'))->count();
+            $loanChartLabels[] = $date->format('D, d M'); // Mon, 01 Jan
+            $loanChartData[] = $count;
+        }
+
+        // CHART DATA 2: Books per Category
+        $categoryChartLabels = [];
+        $categoryChartData = [];
+        $categories = \App\Models\Category::withCount('books')->orderBy('books_count', 'desc')->take(5)->get();
+        foreach ($categories as $cat) {
+            $categoryChartLabels[] = $cat->name;
+            $categoryChartData[] = $cat->books_count;
+        }
+
         return view('dashboard', compact(
             'totalBooks',
             'totalUsers',
@@ -37,38 +56,12 @@ class DashboardController extends Controller
             'overdueLoans',
             'recentLoans',
             'lowStockBooks',
-            'outOfStockBooks'
+            'outOfStockBooks',
+            'loanChartLabels',
+            'loanChartData',
+            'categoryChartLabels',
+            'categoryChartData'
         ));
     }
 
-    /**
-     * Daily loan report
-     */
-    public function dailyReport(Request $request)
-    {
-        $date = $request->input('date', now()->format('Y-m-d'));
-
-        $loans = \App\Models\Loan::with(['user', 'book'])
-            ->whereDate('loan_date', $date)
-            ->get();
-
-        $totalLoans = $loans->count();
-        $totalFines = \App\Models\Loan::whereDate('return_date', $date)
-            ->sum('fine_amount');
-
-        return view('reports.daily', compact('loans', 'date', 'totalLoans', 'totalFines'));
-    }
-
-    /**
-     * Overdue loans report
-     */
-    public function overdueReport()
-    {
-        $overdueLoans = \App\Models\Loan::with(['user', 'book'])
-            ->where('status', 'active')
-            ->where('due_date', '<', now())
-            ->get();
-
-        return view('reports.overdue', compact('overdueLoans'));
-    }
 }

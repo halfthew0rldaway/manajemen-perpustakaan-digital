@@ -5,9 +5,39 @@
 @section('content')
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
-        <div class="mb-8">
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Laporan Keterlambatan</h1>
-            <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Daftar peminjaman yang melewati jatuh tempo</p>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Laporan Keterlambatan</h1>
+                <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Daftar peminjaman yang melewati jatuh tempo</p>
+            </div>
+            <div class="flex gap-3">
+                <a href="{{ route('reports.daily') }}"
+                    class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors inline-flex items-center justify-center border border-gray-300">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Kembali
+                </a>
+                <button onclick="window.print()" type="button"
+                    class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center"
+                    style="border-bottom: 3px solid #991b1b;">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Cetak PDF
+                </button>
+                <a href="{{ route('reports.overdue.export') }}"
+                    class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center"
+                    style="border-bottom: 3px solid #166534;">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export Excel
+                </a>
+            </div>
         </div>
 
         <!-- Statistics -->
@@ -95,7 +125,9 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($overdueLoans as $index => $loan)
                             <tr class="hover:bg-red-50 transition">
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    {{ $overdueLoans instanceof \Illuminate\Pagination\LengthAwarePaginator ? $overdueLoans->firstItem() + $index : $index + 1 }}
+                                </td>
                                 <td class="px-6 py-4">
                                     <p class="font-medium text-gray-900">{{ $loan->user->name }}</p>
                                     <p class="text-sm text-gray-500">{{ $loan->user->email }}</p>
@@ -133,7 +165,11 @@
                                         @csrf
                                         <button type="submit"
                                             class="inline-flex items-center px-3 py-1.5 bg-teal-500 text-white text-sm font-bold rounded-lg hover:bg-teal-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                                            style="border-bottom: 2px solid #0d9488;"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Kembalikan</button>
+                                            style="border-bottom: 2px solid #0d9488;"><svg class="w-4 h-4 mr-1" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>Kembalikan</button>
                                     </form>
                                 </td>
                             </tr>
@@ -157,16 +193,10 @@
             </div>
         </div>
 
-        <!-- Back Button -->
-        <div class="mt-6">
-            <a href="{{ route('dashboard') }}"
-                class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition-all shadow-md hover:shadow-lg border-2 border-gray-300 hover:border-gray-400 transform hover:-translate-y-0.5"
-                style="border-bottom: 3px solid #9ca3af;">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Kembali ke Dashboard
-            </a>
-        </div>
+        @if($overdueLoans instanceof \Illuminate\Pagination\LengthAwarePaginator && $overdueLoans->hasPages())
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                {{ $overdueLoans->links() }}
+            </div>
+        @endif
     </div>
 @endsection
