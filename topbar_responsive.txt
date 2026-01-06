@@ -1,0 +1,110 @@
+                <!-- Top Bar - Responsive -->
+                <header class="bg-white shadow-sm border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-0">
+                        <!-- Date & Timezones -->
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 lg:gap-6">
+                            <!-- Date -->
+                            <div class="lg:border-r lg:border-gray-200 lg:pr-6">
+                                <p class="text-sm font-semibold text-gray-800">
+                                    <!-- Full date for desktop -->
+                                    <span class="hidden sm:inline">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</span>
+                                    <!-- Short date for mobile -->
+                                    <span class="sm:hidden">{{ now()->locale('id')->isoFormat('D MMM YYYY') }}</span>
+                                </p>
+                            </div>
+                            
+                            <!-- Indonesian Timezones -->
+                            <div class="flex items-center gap-2 sm:gap-3 lg:gap-4 overflow-x-auto pb-1 sm:pb-0">
+                                <!-- WIB -->
+                                <div class="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-sky-100 rounded-lg flex items-center justify-center group-hover:bg-sky-200 transition-colors">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-gray-500">WIB</p>
+                                        <p class="text-sm font-bold text-gray-900 tabular-nums" id="time-wib">{{ \Carbon\Carbon::now('Asia/Jakarta')->format('H:i') }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <div class="h-7 sm:h-8 w-px bg-gray-200 flex-shrink-0"></div>
+
+                                <!-- WITA -->
+                                <div class="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-teal-100 rounded-lg flex items-center justify-center group-hover:bg-teal-200 transition-colors">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-gray-500">WITA</p>
+                                        <p class="text-sm font-bold text-gray-900 tabular-nums" id="time-wita">{{ \Carbon\Carbon::now('Asia/Makassar')->format('H:i') }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <div class="h-7 sm:h-8 w-px bg-gray-200 flex-shrink-0"></div>
+
+                                <!-- WIT -->
+                                <div class="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-gray-500">WIT</p>
+                                        <p class="text-sm font-bold text-gray-900 tabular-nums" id="time-wit">{{ \Carbon\Carbon::now('Asia/Jayapura')->format('H:i') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Info -->
+                        <div class="flex items-center gap-2 sm:gap-3 pt-2 lg:pt-0 border-t lg:border-t-0 border-gray-100">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-sky-400 to-sky-600 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow flex-shrink-0">
+                                <span class="text-sm font-bold text-white">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name }}</p>
+                                <p class="text-xs text-gray-500">{{ ucfirst(auth()->user()->role) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Real-time Clock Update Script -->
+                <script>
+                    function updateClocks() {
+                        const now = new Date();
+                        
+                        // WIB (GMT+7)
+                        const wib = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
+                        const wibElement = document.getElementById('time-wib');
+                        if (wibElement) {
+                            wibElement.textContent = wib.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
+                        }
+                        
+                        // WITA (GMT+8)
+                        const wita = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Makassar' }));
+                        const witaElement = document.getElementById('time-wita');
+                        if (witaElement) {
+                            witaElement.textContent = wita.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
+                        }
+                        
+                        // WIT (GMT+9)
+                        const wit = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jayapura' }));
+                        const witElement = document.getElementById('time-wit');
+                        if (witElement) {
+                            witElement.textContent = wit.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
+                        }
+                    }
+                    
+                    // Update immediately
+                    updateClocks();
+                    
+                    // Update every second
+                    setInterval(updateClocks, 1000);
+                </script>
