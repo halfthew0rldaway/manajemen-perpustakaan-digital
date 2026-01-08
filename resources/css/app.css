@@ -9,3 +9,41 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer components {
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+        @apply w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-white focus:border-sky-500 focus:ring-sky-500 dark:focus:border-sky-400 dark:focus:ring-sky-400 placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-200 ease-in-out shadow-sm;
+    }
+
+    .form-select {
+        @apply pr-10;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        appearance: none;
+    }
+
+    .dark .form-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    }
+
+    .form-label {
+        @apply block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1;
+    }
+
+    .btn-primary {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-sky-500 text-white font-bold rounded-xl hover:bg-sky-600 transition-all shadow-lg hover:shadow-sky-500/30 transform hover:-translate-y-0.5 border-b-4 border-sky-700 active:border-b-0 active:translate-y-0.5 active:shadow-none;
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-all shadow-md hover:shadow-lg border-b-4 border-gray-300 dark:border-gray-600 active:border-b-0 active:translate-y-0.5 active:shadow-none;
+    }
+
+    .card {
+        @apply bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden;
+    }
+}

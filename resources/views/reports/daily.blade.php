@@ -6,19 +6,21 @@
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Laporan Peminjaman Harian</h1>
-            <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Laporan peminjaman berdasarkan tanggal</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Laporan Peminjaman Harian</h1>
+            <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400">Laporan peminjaman berdasarkan
+                tanggal</p>
         </div>
 
         <!-- Date Filter -->
-        <div class="mb-6 bg-white sm:rounded-xl shadow-sm border-0 sm:border border-gray-100 p-4">
+        <div
+            class="mb-6 bg-white dark:bg-slate-800 sm:rounded-xl shadow-sm border-0 sm:border border-gray-100 dark:border-gray-700 p-4">
             <form method="GET" action="{{ route('reports.daily') }}" class="flex flex-wrap gap-4 items-end">
                 <div class="flex-1 min-w-[200px]">
-                    <label for="date" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Pilih Tanggal
                     </label>
                     <input type="date" name="date" id="date" value="{{ $date }}"
-                        class="w-full px-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400">
+                        class="w-full px-4 py-2 sm:py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-white">
                 </div>
                 <button type="submit"
                     class="bg-sky-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
@@ -57,11 +59,11 @@
 
         <!-- Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">Total Peminjaman</p>
-                        <p class="text-3xl font-bold text-gray-900 mt-2">{{ $totalLoans }}</p>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Peminjaman</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ $totalLoans }}</p>
                     </div>
                     <div class="bg-sky-100 rounded-full p-3">
                         <svg class="w-8 h-8 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,10 +74,10 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">Total Denda</p>
+                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Denda</p>
                         <p class="text-3xl font-bold text-pink-600 mt-2">Rp{{ number_format($totalFines, 0, ',', '.') }}</p>
                     </div>
                     <div class="bg-pink-500 rounded-full p-3">
@@ -89,44 +91,53 @@
         </div>
 
         <!-- Loans Table -->
-        <div class="bg-white sm:rounded-xl shadow-sm border-0 sm:border border-gray-100 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100">
-                <h2 class="text-lg font-semibold text-gray-900">
+        <div
+            class="bg-white dark:bg-slate-800 sm:rounded-xl shadow-sm border-0 sm:border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
                     Peminjaman pada {{ \Carbon\Carbon::parse($date)->format('d F Y') }}
                 </h2>
             </div>
 
             <div class="overflow-x-auto -mx-4 sm:mx-0">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-slate-700/50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                No
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Peminjam</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Buku
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                Buku
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jatuh
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                Jatuh
                                 Tempo</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Status</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse($loans as $index => $loan)
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-4 text-sm text-gray-900">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition">
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">
                                     {{ $loans instanceof \Illuminate\Pagination\LengthAwarePaginator ? $loans->firstItem() + $index : $index + 1 }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <p class="font-medium text-gray-900">{{ $loan->user->name }}</p>
-                                    <p class="text-sm text-gray-500">{{ $loan->user->email }}</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $loan->user->name }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $loan->user->email }}</p>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <p class="font-medium text-gray-900">{{ $loan->book->title }}</p>
-                                    <p class="text-sm text-gray-500">{{ $loan->book->author }}</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $loan->book->title }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $loan->book->author }}</p>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-900">
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     {{ $loan->due_date->format('d M Y') }}
                                 </td>
                                 <td class="px-6 py-4">
@@ -145,7 +156,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                <td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
                                     Tidak ada peminjaman pada tanggal ini
                                 </td>
                             </tr>
@@ -154,7 +165,7 @@
                 </table>
             </div>
             @if($loans instanceof \Illuminate\Pagination\LengthAwarePaginator && $loans->hasPages())
-                <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                <div class="bg-gray-50 dark:bg-slate-700/50 px-6 py-4 border-t border-gray-200 dark:border-gray-700">
                     {{ $loans->appends(['date' => $date])->links() }}
                 </div>
             @endif

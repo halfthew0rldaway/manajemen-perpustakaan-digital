@@ -13,6 +13,19 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
     <!-- Google Fonts - Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,9 +55,13 @@
         }
 
         .btn-secondary {
-            @apply px-6 py-3 bg-white border-2 border-gray-400 text-gray-700 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200;
+            @apply px-6 py-3 bg-white dark:bg-slate-700 border-2 border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200;
             border-bottom: 4px solid #9ca3af;
             transform: translateY(0);
+        }
+
+        .dark .btn-secondary {
+            border-bottom-color: #4b5563;
         }
 
         .btn-secondary:hover {
@@ -142,7 +159,16 @@
 
         /* Enhanced Form Elements */
         .form-input {
-            @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400/30 focus:border-sky-400 transition-all duration-200 bg-white shadow-sm;
+            @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400/30 focus:border-sky-400 transition-all duration-200 bg-white shadow-sm text-gray-900;
+            @apply dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:focus:ring-sky-500/30 dark:placeholder-gray-400;
+        }
+
+        .form-input::placeholder {
+            @apply text-gray-400;
+        }
+
+        .dark .form-input::placeholder {
+            @apply text-gray-500;
         }
 
         .form-input:focus {
@@ -150,7 +176,8 @@
         }
 
         .form-select {
-            @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400/30 focus:border-sky-400 transition-all duration-200 bg-white cursor-pointer shadow-sm;
+            @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400/30 focus:border-sky-400 transition-all duration-200 bg-white cursor-pointer shadow-sm text-gray-900;
+            @apply dark:bg-slate-700 dark:border-gray-600 dark:text-white;
         }
 
         .form-select:focus {
@@ -158,7 +185,16 @@
         }
 
         .form-textarea {
-            @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400/30 focus:border-sky-400 transition-all duration-200 bg-white resize-none shadow-sm;
+            @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400/30 focus:border-sky-400 transition-all duration-200 bg-white resize-none shadow-sm text-gray-900;
+            @apply dark:bg-slate-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400;
+        }
+
+        .form-textarea::placeholder {
+            @apply text-gray-400;
+        }
+
+        .dark .form-textarea::placeholder {
+            @apply text-gray-500;
         }
 
         .form-textarea:focus {
@@ -167,15 +203,18 @@
 
         .form-label {
             @apply block text-sm font-semibold text-gray-700 mb-2;
+            @apply dark:text-gray-300;
         }
 
         /* Card Styles */
         .card {
             @apply bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden;
+            @apply dark:bg-slate-800 dark:border-gray-700;
         }
 
         .card-header {
             @apply px-6 py-4 border-b border-gray-200 bg-gray-50;
+            @apply dark:bg-slate-700/50 dark:border-gray-700;
         }
 
         .card-body {
@@ -205,6 +244,7 @@
         /* Table Enhancements */
         .table-hover tbody tr:hover {
             @apply bg-sky-50/50 transition-colors duration-150;
+            @apply dark:hover:bg-sky-900/20;
         }
 
         /* Sidebar Transition */
@@ -395,16 +435,121 @@
     </script>
 </head>
 
-<body class="bg-gray-50" x-data="{ sidebarOpen: false }">
+</head>
+
+<body class="bg-gray-50 dark:bg-slate-900 transition-colors duration-300" 
+      x-data="{ 
+          sidebarOpen: false, 
+          darkMode: localStorage.getItem('darkMode') === 'true',
+          toggleTheme() {
+              this.darkMode = !this.darkMode;
+              localStorage.setItem('darkMode', this.darkMode);
+              if (this.darkMode) {
+                  document.documentElement.classList.add('dark');
+              } else {
+                  document.documentElement.classList.remove('dark');
+              }
+          }
+      }"
+      x-init="$watch('darkMode', val => val ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark')); if(darkMode) document.documentElement.classList.add('dark');"
+>
+    <!-- Dark Mode Toggle Floating Button -->
+    <div x-data="{
+        x: window.innerWidth - 100,
+        y: window.innerHeight - 100,
+        isDragging: false,
+        startX: 0,
+        startY: 0,
+        initialX: 0,
+        initialY: 0,
+        hasMoved: false,
+        init() {
+            // Restore position if saved
+            const savedPos = localStorage.getItem('darkModeBtnPos');
+            if (savedPos) {
+                const pos = JSON.parse(savedPos);
+                this.x = Math.min(window.innerWidth - 60, Math.max(0, pos.x));
+                this.y = Math.min(window.innerHeight - 60, Math.max(0, pos.y));
+            }
+        },
+        startDrag(e) {
+            // Prevent default to avoid text selection etc
+            // e.preventDefault(); 
+            this.isDragging = true;
+            this.hasMoved = false;
+            this.startX = e.clientX || e.touches[0].clientX;
+            this.startY = e.clientY || e.touches[0].clientY;
+            this.initialX = this.x;
+            this.initialY = this.y;
+        },
+        onDrag(e) {
+            if (!this.isDragging) return;
+            
+            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+
+            const dx = clientX - this.startX;
+            const dy = clientY - this.startY;
+
+            if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+                this.hasMoved = true;
+            }
+
+            this.x = this.initialX + dx;
+            this.y = this.initialY + dy;
+            
+            // Boundary constraints
+            this.x = Math.max(0, Math.min(window.innerWidth - 60, this.x));
+            this.y = Math.max(0, Math.min(window.innerHeight - 60, this.y));
+        },
+        stopDrag() {
+            if (this.isDragging) {
+                this.isDragging = false;
+                // Save position
+                localStorage.setItem('darkModeBtnPos', JSON.stringify({x: this.x, y: this.y}));
+            }
+        }
+    }" 
+    x-init="init()"
+    @mousemove.window="onDrag($event)"
+    @touchmove.window="onDrag($event)"
+    @mouseup.window="stopDrag()"
+    @touchend.window="stopDrag()"
+    class="fixed z-50 cursor-grab touch-none active:cursor-grabbing"
+    :style="`top: ${y}px; left: ${x}px; touch-action: none;`"
+    >
+        <button 
+            @mousedown="startDrag($event)"
+            @touchstart="startDrag($event)"
+            @click="if(!hasMoved) toggleTheme()"
+            class="w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300 border-2 border-white/20 backdrop-blur-sm group"
+            :class="darkMode ? 'bg-slate-800 text-yellow-400 border-slate-600' : 'bg-white text-sky-600 border-sky-100'"
+            title="Toggle Dark Mode"
+        >
+            <!-- Sun Icon (for Dark Mode) -->
+            <svg x-show="darkMode" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 rotate-90" x-transition:enter-end="opacity-100 rotate-0" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <!-- Moon Icon (for Light Mode) -->
+            <svg x-show="!darkMode" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -rotate-90" x-transition:enter-end="opacity-100 rotate-0" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+            
+            <!-- Pulse Glow Effect -->
+            <div class="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                 :class="darkMode ? 'bg-yellow-400/20' : 'bg-sky-400/20 animate-pulse'"></div>
+        </button>
+    </div>
+
     @auth
         <div class="flex h-screen overflow-hidden">
             <!-- Sidebar -->
             <aside @mouseenter="sidebarOpen = true" @mouseleave="sidebarOpen = false" :class="sidebarOpen ? 'w-64' : 'w-20'"
-                class="sidebar-transition bg-sky-600 text-white flex flex-col shadow-xl relative z-10">
+                class="sidebar-transition bg-sky-600 dark:bg-slate-900 border-r dark:border-slate-800 text-white flex flex-col shadow-xl relative z-10">
                 <!-- Logo & Toggle -->
-                <div class="flex items-center justify-between p-4 border-b border-sky-500">
+                <div class="flex items-center justify-between p-4 border-b border-sky-500 dark:border-slate-800">
                     <div class="flex items-center space-x-3 overflow-hidden">
-                        <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                        <div class="flex-shrink-0 w-10 h-10 bg-white dark:bg-slate-800 rounded-lg flex items-center justify-center shadow-lg text-sky-600 dark:text-sky-400">
                             <span class="text-2xl">📚</span>
                         </div>
                         <div x-show="sidebarOpen" x-transition class="overflow-hidden">
@@ -521,15 +666,15 @@
             </aside>
 
             <!-- Main Content -->
-            <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
                 <!-- Top Bar - Responsive -->
-                <header class="bg-white shadow-sm border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4">
+                <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 px-4 sm:px-6 py-3 sm:py-4 transition-colors duration-300">
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-0">
                         <!-- Date & Timezones -->
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 lg:gap-6">
                             <!-- Date -->
-                            <div class="lg:border-r lg:border-gray-200 lg:pr-6">
-                                <p class="text-sm font-semibold text-gray-800">
+                            <div class="lg:border-r lg:border-gray-200 dark:lg:border-gray-700 lg:pr-6">
+                                <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">
                                     <!-- Full date for desktop -->
                                     <span class="hidden sm:inline">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</span>
                                     <!-- Short date for mobile -->
@@ -541,59 +686,59 @@
                             <div class="flex items-center gap-2 sm:gap-3 lg:gap-4 overflow-x-auto pb-1 sm:pb-0">
                                 <!-- WIB -->
                                 <div class="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
-                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-sky-100 rounded-lg flex items-center justify-center group-hover:bg-sky-200 transition-colors">
-                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-sky-100 dark:bg-sky-900/50 rounded-lg flex items-center justify-center group-hover:bg-sky-200 dark:group-hover:bg-sky-900 transition-colors">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-medium text-gray-500">WIB</p>
-                                        <p class="text-sm font-bold text-gray-900 tabular-nums" id="time-wib">{{ \Carbon\Carbon::now('Asia/Jakarta')->format('H:i') }}</p>
+                                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400">WIB</p>
+                                        <p class="text-sm font-bold text-gray-900 dark:text-white tabular-nums" id="time-wib">{{ \Carbon\Carbon::now('Asia/Jakarta')->format('H:i') }}</p>
                                     </div>
                                 </div>
 
                                 <!-- Divider -->
-                                <div class="h-7 sm:h-8 w-px bg-gray-200 flex-shrink-0"></div>
+                                <div class="h-7 sm:h-8 w-px bg-gray-200 dark:bg-gray-700 flex-shrink-0"></div>
 
                                 <!-- WITA -->
                                 <div class="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
-                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-teal-100 rounded-lg flex items-center justify-center group-hover:bg-teal-200 transition-colors">
-                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-teal-100 dark:bg-teal-900/50 rounded-lg flex items-center justify-center group-hover:bg-teal-200 dark:group-hover:bg-teal-900 transition-colors">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-medium text-gray-500">WITA</p>
-                                        <p class="text-sm font-bold text-gray-900 tabular-nums" id="time-wita">{{ \Carbon\Carbon::now('Asia/Makassar')->format('H:i') }}</p>
+                                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400">WITA</p>
+                                        <p class="text-sm font-bold text-gray-900 dark:text-white tabular-nums" id="time-wita">{{ \Carbon\Carbon::now('Asia/Makassar')->format('H:i') }}</p>
                                     </div>
                                 </div>
 
                                 <!-- Divider -->
-                                <div class="h-7 sm:h-8 w-px bg-gray-200 flex-shrink-0"></div>
+                                <div class="h-7 sm:h-8 w-px bg-gray-200 dark:bg-gray-700 flex-shrink-0"></div>
 
                                 <!-- WIT -->
                                 <div class="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
-                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center group-hover:bg-purple-200 dark:group-hover:bg-purple-900 transition-colors">
+                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-medium text-gray-500">WIT</p>
-                                        <p class="text-sm font-bold text-gray-900 tabular-nums" id="time-wit">{{ \Carbon\Carbon::now('Asia/Jayapura')->format('H:i') }}</p>
+                                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400">WIT</p>
+                                        <p class="text-sm font-bold text-gray-900 dark:text-white tabular-nums" id="time-wit">{{ \Carbon\Carbon::now('Asia/Jayapura')->format('H:i') }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- User Info -->
-                        <div class="flex items-center gap-2 sm:gap-3 pt-2 lg:pt-0 border-t lg:border-t-0 border-gray-100">
+                        <div class="flex items-center gap-2 sm:gap-3 pt-2 lg:pt-0 border-t lg:border-t-0 border-gray-100 dark:border-gray-700">
                             <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-sky-400 to-sky-600 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow flex-shrink-0">
                                 <span class="text-sm font-bold text-white">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name }}</p>
-                                <p class="text-xs text-gray-500">{{ ucfirst(auth()->user()->role) }}</p>
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ auth()->user()->name }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ ucfirst(auth()->user()->role) }}</p>
                             </div>
                         </div>
                     </div>
@@ -690,8 +835,8 @@
                 </main>
 
                 <!-- Footer -->
-                <footer class="bg-white border-t border-gray-200 px-6 py-4">
-                    <p class="text-center text-sm text-gray-500">
+                <footer class="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 px-6 py-4 transition-colors duration-300">
+                    <p class="text-center text-sm text-gray-500 dark:text-gray-400">
                         &copy; {{ date('Y') }} Sistem Perpustakaan Digital. UAS Pemrograman Web Lanjut.
                     </p>
                 </footer>

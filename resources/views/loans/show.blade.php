@@ -8,11 +8,11 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Detail Peminjaman</h1>
-                    <p class="mt-2 text-gray-600">Informasi lengkap peminjaman buku</p>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Detail Peminjaman</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Informasi lengkap peminjaman buku</p>
                 </div>
                 <a href="{{ route('loans.index') }}"
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition">
                     Kembali
                 </a>
             </div>
@@ -22,39 +22,40 @@
             <!-- Main Info -->
             <div class="lg:col-span-2 space-y-6">
                 <!-- Loan Details -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Informasi Peminjaman</h2>
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Informasi Peminjaman</h2>
 
                     <dl class="space-y-4">
-                        <div class="flex justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500">Peminjam</dt>
-                            <dd class="text-base font-medium text-gray-900">{{ $loan->user->name }}</dd>
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Peminjam</dt>
+                            <dd class="text-base font-medium text-gray-900 dark:text-white">{{ $loan->user->name }}</dd>
                         </div>
 
-                        <div class="flex justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500">Email</dt>
-                            <dd class="text-base text-gray-900">{{ $loan->user->email }}</dd>
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</dt>
+                            <dd class="text-base text-gray-900 dark:text-white">{{ $loan->user->email }}</dd>
                         </div>
 
-                        <div class="flex justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500">Buku</dt>
-                            <dd class="text-base font-medium text-gray-900">{{ $loan->book->title }}</dd>
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Buku</dt>
+                            <dd class="text-base font-medium text-gray-900 dark:text-white">{{ $loan->book->title }}</dd>
                         </div>
 
-                        <div class="flex justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500">Penulis</dt>
-                            <dd class="text-base text-gray-900">{{ $loan->book->author }}</dd>
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Penulis</dt>
+                            <dd class="text-base text-gray-900 dark:text-white">{{ $loan->book->author }}</dd>
                         </div>
 
-                        <div class="flex justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500">Tanggal Pinjam</dt>
-                            <dd class="text-base text-gray-900">{{ $loan->loan_date->format('d F Y') }}</dd>
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Tanggal Pinjam</dt>
+                            <dd class="text-base text-gray-900 dark:text-white">{{ $loan->loan_date->format('d F Y') }}</dd>
                         </div>
 
-                        <div class="flex justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500">Jatuh Tempo</dt>
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Jatuh Tempo</dt>
                             <dd
-                                class="text-base {{ $loan->isOverdue() ? 'text-pink-600 font-semibold' : 'text-gray-900' }}">
+                                class="text-base {{ $loan->isOverdue() ? 'text-pink-600 font-semibold' : 'text-gray-900 dark:text-white' }}">
                                 {{ $loan->due_date->format('d F Y') }}
                                 @if($loan->isOverdue() && $loan->status === 'active')
                                     <span class="ml-2 text-sm">(Terlambat {{ $loan->getDaysOverdue() }} hari)</span>
@@ -63,23 +64,24 @@
                         </div>
 
                         @if($loan->return_date)
-                            <div class="flex justify-between py-3 border-b border-gray-100">
-                                <dt class="text-sm font-medium text-gray-500">Tanggal Kembali</dt>
-                                <dd class="text-base text-gray-900">{{ $loan->return_date->format('d F Y') }}</dd>
+                            <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Tanggal Kembali</dt>
+                                <dd class="text-base text-gray-900 dark:text-white">{{ $loan->return_date->format('d F Y') }}
+                                </dd>
                             </div>
                         @endif
 
-                        <div class="flex justify-between py-3 border-b border-gray-100">
-                            <dt class="text-sm font-medium text-gray-500">Status</dt>
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</dt>
                             <dd>
                                 @if($loan->status === 'active')
                                     <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-700">
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
                                         Aktif
                                     </span>
                                 @else
                                     <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                                         Dikembalikan
                                     </span>
                                 @endif
@@ -87,9 +89,9 @@
                         </div>
 
                         <div class="flex justify-between py-3">
-                            <dt class="text-sm font-medium text-gray-500">Denda</dt>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Denda</dt>
                             <dd
-                                class="text-base {{ $loan->fine_amount > 0 ? 'text-pink-600 font-semibold' : 'text-gray-900' }}">
+                                class="text-base {{ $loan->fine_amount > 0 ? 'text-pink-600 font-semibold' : 'text-gray-900 dark:text-white' }}">
                                 @if($loan->fine_amount > 0)
                                     Rp{{ number_format($loan->fine_amount, 0, ',', '.') }}
                                 @else
@@ -119,8 +121,9 @@
 
                 <!-- Actions -->
                 @if($loan->status === 'active')
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Aksi</h3>
+                    <div
+                        class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Aksi</h3>
 
                         <form action="{{ route('loans.return', $loan) }}" method="POST"
                             onsubmit="return confirm('Proses pengembalian buku ini?')">
@@ -132,21 +135,22 @@
                         </form>
 
                         <a href="{{ route('loans.edit', $loan) }}"
-                            class="mt-3 block w-full text-center px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium">
+                            class="mt-3 block w-full text-center px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition font-medium">
                             Edit Tanggal
                         </a>
                     </div>
                 @endif
 
                 <!-- Info -->
-                <div class="bg-blue-50 border-l-4 border-sky-500 p-4 rounded">
+                <div class="bg-blue-50 dark:bg-sky-900/20 border-l-4 border-sky-500 p-4 rounded">
                     <div class="flex">
-                        <svg class="h-5 w-5 text-sky-700 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-5 w-5 text-sky-700 dark:text-sky-400 mr-2" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <div>
-                            <p class="text-sm text-sky-700">
+                            <p class="text-sm text-sky-700 dark:text-sky-300">
                                 Denda keterlambatan: <strong>Rp2.000/hari</strong>
                             </p>
                         </div>
