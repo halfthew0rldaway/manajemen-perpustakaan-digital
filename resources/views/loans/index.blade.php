@@ -11,9 +11,7 @@
                 <p class="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400">Kelola peminjaman buku
                     perpustakaan</p>
             </div>
-            <a href="{{ route('loans.create') }}"
-                class="w-full sm:w-auto bg-sky-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center"
-                style="border-bottom: 4px solid #0284c7;">
+            <a href="{{ route('loans.create') }}" class="btn-primary w-full sm:w-auto">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
@@ -48,9 +46,7 @@
                         </select>
                     </div>
                 @endif
-                <button type="submit"
-                    class="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    style="border-bottom: 3px solid #1f2937;">
+                <button type="submit" class="btn-dark">
                     <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -58,9 +54,7 @@
                     Filter
                 </button>
                 @if(request('status') || request('petugas_id') || request('member_id'))
-                    <a href="{{ route('loans.index') }}"
-                        class="bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-slate-600 transition-all shadow-md hover:shadow-lg border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 transform hover:-translate-y-0.5"
-                        style="border-bottom: 3px solid #6b7280;">
+                    <a href="{{ route('loans.index') }}" class="btn-secondary">
                         <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -129,7 +123,7 @@
                                         {{ $loan->due_date->format('d M Y') }}
                                     </span>
                                     @if($loan->isOverdue())
-                                        <p class="text-xs text-pink-600">Terlambat {{ $loan->getDaysOverdue() }} hari</p>
+                                        <p class="text-xs text-pink-600 font-medium">Terlambat {{ $loan->getDaysOverdue() }} hari</p>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
@@ -153,33 +147,31 @@
                                         <span class="text-gray-400 dark:text-gray-500">-</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
-                                    @if($loan->status === 'active')
-                                        <form action="{{ route('loans.return', $loan) }}" method="POST" class="inline"
-                                            onsubmit="return confirm('Proses pengembalian buku ini?')">
-                                            @csrf
-                                            <button type="submit"
-                                                class="inline-flex items-center px-3 py-1.5 bg-teal-500 text-white text-sm font-bold rounded-lg hover:bg-teal-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                                                style="border-bottom: 2px solid #0d9488;">
-                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                Kembalikan
-                                            </button>
-                                        </form>
-                                    @endif
-                                    <a href="{{ route('loans.show', $loan) }}"
-                                        class="inline-flex items-center px-3 py-1.5 bg-sky-500 text-white text-sm font-bold rounded-lg hover:bg-sky-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                                        style="border-bottom: 2px solid #0284c7;">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        Detail
-                                    </a>
+                                <td class="px-6 py-4 text-right text-sm font-medium">
+                                    <div class="flex justify-end gap-2 items-center">
+                                        @if($loan->status === 'active')
+                                            <form action="{{ route('loans.return', $loan) }}" method="POST" class="inline-flex"
+                                                onsubmit="return confirmModal(event, 'Apakah Anda yakin ingin mengembalikan buku ini?', 'Konfirmasi Pengembalian')">
+                                                @csrf
+                                                <button type="submit" class="btn-primary btn-sm whitespace-nowrap">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    Kembalikan
+                                                </button>
+                                            </form>
+                                        @endif
+                                        <a href="{{ route('loans.show', $loan) }}" class="btn-secondary btn-sm whitespace-nowrap">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Detail
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

@@ -106,8 +106,7 @@
                         </a>
                     @endif
                     <button type="submit"
-                        class="w-full sm:w-auto bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                        style="border-bottom: 3px solid #1f2937;">
+                        class="btn-dark w-full sm:w-auto">
                         <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -189,7 +188,7 @@
                                         <a href="{{ route('books.show', $book) }}" class="btn-primary btn-sm">Detail</a>
                                         <a href="{{ route('books.edit', $book) }}" class="btn-secondary btn-sm">Edit</a>
                                         <form action="{{ route('books.destroy', $book) }}" method="POST" class="inline-block"
-                                            onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                            onsubmit="return confirmModal(event, 'Yakin ingin menghapus buku ini?', 'Hapus Buku', 'danger')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-danger btn-sm">Hapus</button>

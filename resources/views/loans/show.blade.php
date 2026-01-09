@@ -30,7 +30,8 @@
                         <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Anggota</dt>
                             <dd class="text-base font-medium text-gray-900 dark:text-white">
-                                {{ $loan->member?->name ?? 'N/A' }}</dd>
+                                {{ $loan->member?->name ?? 'N/A' }}
+                            </dd>
                         </div>
 
                         <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
@@ -132,7 +133,7 @@
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Aksi</h3>
 
                         <form action="{{ route('loans.return', $loan) }}" method="POST"
-                            onsubmit="return confirm('Proses pengembalian buku ini?')">
+                            onsubmit="return confirmModal(event, 'Apakah Anda yakin ingin mengembalikan buku ini?', 'Konfirmasi Pengembalian')">
                             @csrf
                             <button type="submit"
                                 class="w-full px-4 py-3 bg-teal-500 text-white rounded-lg hover:bg-teal-500 transition font-medium">

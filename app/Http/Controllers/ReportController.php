@@ -15,7 +15,7 @@ class ReportController extends Controller
     {
         $date = $request->input('date', now()->format('Y-m-d'));
 
-        $loans = Loan::with(['user', 'book'])
+        $loans = Loan::with(['member', 'book'])
             ->whereDate('loan_date', $date)
             ->latest()
             ->paginate(10); // Added pagination
@@ -32,7 +32,7 @@ class ReportController extends Controller
      */
     public function overdue()
     {
-        $overdueLoans = Loan::with(['user', 'book'])
+        $overdueLoans = Loan::with(['member', 'book'])
             ->where('status', 'active')
             ->where('due_date', '<', now())
             ->latest()
@@ -42,13 +42,43 @@ class ReportController extends Controller
     }
 
     /**
+     * Daily Report PDF View
+     */
+    public function dailyPdf(Request $request)
+    {
+        $date = $request->input('date', now()->format('Y-m-d'));
+
+        $loans = Loan::with(['member', 'book'])
+            ->whereDate('loan_date', $date)
+            ->get(); // Get usage for PDF (no pagination)
+
+        $totalLoans = $loans->count();
+        $totalFines = Loan::whereDate('return_date', $date)->sum('fine_amount');
+
+        return view('reports.daily_pdf', compact('loans', 'date', 'totalLoans', 'totalFines'));
+    }
+
+    /**
+     * Overdue Report PDF View
+     */
+    public function overduePdf()
+    {
+        $overdueLoans = Loan::with(['member', 'book'])
+            ->where('status', 'active')
+            ->where('due_date', '<', now())
+            ->get(); // Get usage for PDF (no pagination)
+
+        return view('reports.overdue_pdf', compact('overdueLoans'));
+    }
+
+    /**
      * Export Daily Report to CSV
      */
     public function exportDaily(Request $request)
     {
         $date = $request->input('date', now()->format('Y-m-d'));
 
-        $loans = Loan::with(['user', 'book'])
+        $loans = Loan::with(['member', 'book'])
             ->whereDate('loan_date', $date)
             ->get();
 
@@ -56,7 +86,7 @@ class ReportController extends Controller
             foreach ($loans as $loan) {
                 fputcsv($handle, [
                     $loan->id,
-                    $loan->user->name,
+                    $loan->member->name,
                     $loan->book->title,
                     $loan->loan_date,
                     $loan->due_date,
@@ -71,7 +101,7 @@ class ReportController extends Controller
      */
     public function exportOverdue()
     {
-        $loans = Loan::with(['user', 'book'])
+        $loans = Loan::with(['member', 'book'])
             ->where('status', 'active')
             ->where('due_date', '<', now())
             ->get();
@@ -83,7 +113,7 @@ class ReportController extends Controller
 
                 fputcsv($handle, [
                     $loan->id,
-                    $loan->user->name,
+                    $loan->member->name,
                     $loan->book->title,
                     $loan->loan_date,
                     $loan->due_date,

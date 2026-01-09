@@ -70,7 +70,7 @@
                                             class="btn-secondary btn-sm">Edit</a>
                                         <form action="{{ route('categories.destroy', $category) }}" method="POST"
                                             class="inline-block"
-                                            onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                                            onsubmit="return confirmModal(event, 'Yakin ingin menghapus kategori ini?', 'Hapus Kategori', 'danger')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-danger btn-sm">Hapus</button>

@@ -20,18 +20,14 @@
                     </svg>
                     Kembali
                 </a>
-                <button onclick="window.print()" type="button"
-                    class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center"
-                    style="border-bottom: 3px solid #991b1b;">
+                <a href="{{ route('reports.overdue.pdf') }}" target="_blank" class="btn-dark">
                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                     </svg>
                     Cetak PDF
-                </button>
-                <a href="{{ route('reports.overdue.export') }}"
-                    class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center"
-                    style="border-bottom: 3px solid #166534;">
+                </a>
+                <a href="{{ route('reports.overdue.export') }}" class="btn-success">
                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -143,8 +139,8 @@
                                     {{ $overdueLoans instanceof \Illuminate\Pagination\LengthAwarePaginator ? $overdueLoans->firstItem() + $index : $index + 1 }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <p class="font-medium text-gray-900 dark:text-white">{{ $loan->user->name }}</p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $loan->user->email }}</p>
+                                    <p class="font-medium text-gray-900 dark:text-white">{{ $loan->member->name }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $loan->member->phone }}</p>
                                 </td>
                                 <td class="px-6 py-4">
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $loan->book->title }}</p>
@@ -162,28 +158,28 @@
                                 <td class="px-6 py-4 text-sm font-semibold text-pink-600 dark:text-pink-400">
                                     Rp{{ number_format($loan->getDaysOverdue() * 2000, 0, ',', '.') }}
                                 </td>
-                                <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
-                                    <a href="{{ route('loans.show', $loan) }}"
-                                        class="btn-primary btn-sm inline-flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        Detail
-                                    </a>
-                                    <form action="{{ route('loans.return', $loan) }}" method="POST" class="inline"
-                                        onsubmit="return confirm('Proses pengembalian buku ini?')">
-                                        @csrf
-                                        <button type="submit"
-                                            class="inline-flex items-center px-3 py-1.5 bg-teal-500 text-white text-sm font-bold rounded-lg hover:bg-teal-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                                            style="border-bottom: 2px solid #0d9488;"><svg class="w-4 h-4 mr-1" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
+                                <td class="px-6 py-4 text-right text-sm font-medium">
+                                    <div class="flex justify-end gap-2 items-center">
+                                        <a href="{{ route('loans.show', $loan) }}"
+                                            class="btn-secondary btn-sm inline-flex items-center whitespace-nowrap">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>Kembalikan</button>
-                                    </form>
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Detail
+                                        </a>
+                                        <form action="{{ route('loans.return', $loan) }}" method="POST" class="inline-flex"
+                                            onsubmit="return confirmModal(event, 'Apakah Anda yakin ingin mengembalikan buku ini?', 'Konfirmasi Pengembalian')">
+                                            @csrf
+                                            <button type="submit" class="btn-primary btn-sm whitespace-nowrap"><svg
+                                                    class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>Kembalikan</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

@@ -34,9 +34,11 @@ Route::middleware('auth')->group(function () {
     // Reports
     Route::get('/reports/daily', [ReportController::class, 'daily'])->name('reports.daily');
     Route::get('/reports/daily/export', [ReportController::class, 'exportDaily'])->name('reports.daily.export');
+    Route::get('/reports/daily/pdf', [ReportController::class, 'dailyPdf'])->name('reports.daily.pdf');
 
     Route::get('/reports/overdue', [ReportController::class, 'overdue'])->name('reports.overdue');
     Route::get('/reports/overdue/export', [ReportController::class, 'exportOverdue'])->name('reports.overdue.export');
+    Route::get('/reports/overdue/pdf', [ReportController::class, 'overduePdf'])->name('reports.overdue.pdf');
 
     // Categories
     Route::resource('categories', CategoryController::class);

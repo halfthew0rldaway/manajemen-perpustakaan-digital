@@ -83,6 +83,6 @@ class Loan extends Model
             return 0;
         }
 
-        return now()->diffInDays($this->due_date);
+        return (int) abs(now()->startOfDay()->diffInDays($this->due_date->startOfDay()));
     }
 }

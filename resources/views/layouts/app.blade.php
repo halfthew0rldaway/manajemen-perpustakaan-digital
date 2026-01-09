@@ -35,6 +35,10 @@
 
     <style>
         /* ========== CSS VARIABLES - DESIGN SYSTEM ========== */
+        [x-cloak] {
+            display: none !important;
+        }
+
         :root {
             /* Bright Mode Colors */
             --bg-primary: #F3F5F7;
@@ -144,8 +148,8 @@
             color: white;
             background-color: var(--accent);
             border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 0 #2A6668;
             transition: all 0.2s ease;
             cursor: pointer;
             position: relative;
@@ -153,36 +157,26 @@
         }
 
         .btn-primary::before {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: var(--accent-hover);
-            border-radius: 0 0 0.5rem 0.5rem;
-            transition: all 0.2s ease;
+            display: none;
         }
 
         .btn-primary:hover {
             background-color: var(--accent-hover);
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 0 #2A6668;
         }
 
         .btn-primary:hover::before {
-            height: 4px;
-            bottom: -4px;
+            display: none;
         }
 
         .btn-primary:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2A6668;
         }
 
         .btn-primary:active::before {
-            height: 2px;
-            bottom: -2px;
+            display: none;
         }
 
         .btn-secondary {
@@ -196,8 +190,8 @@
             color: var(--text-primary);
             background-color: var(--bg-card);
             border: 2px solid var(--border-color);
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 0 var(--border-color);
             transition: all 0.2s ease;
             cursor: pointer;
             position: relative;
@@ -205,37 +199,27 @@
         }
 
         .btn-secondary::before {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: var(--border-color);
-            border-radius: 0 0 0.5rem 0.5rem;
-            transition: all 0.2s ease;
+            display: none;
         }
 
         .btn-secondary:hover {
             background-color: var(--bg-primary);
             border-color: var(--text-muted);
             transform: translateY(-2px);
-            box-shadow: 0 6px 10px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 0 var(--text-muted);
         }
 
         .btn-secondary:hover::before {
-            height: 4px;
-            bottom: -4px;
+            display: none;
         }
 
         .btn-secondary:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--text-muted);
         }
 
         .btn-secondary:active::before {
-            height: 2px;
-            bottom: -2px;
+            display: none;
         }
 
         .btn-danger {
@@ -249,8 +233,8 @@
             color: white;
             background-color: var(--destructive);
             border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 0 #991b1b;
             transition: all 0.2s ease;
             cursor: pointer;
             position: relative;
@@ -258,36 +242,147 @@
         }
 
         .btn-danger::before {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: var(--destructive-hover);
-            border-radius: 0 0 0.5rem 0.5rem;
-            transition: all 0.2s ease;
+            display: none;
         }
 
         .btn-danger:hover {
             background-color: var(--destructive-hover);
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 0 #991b1b;
         }
 
         .btn-danger:hover::before {
-            height: 4px;
-            bottom: -4px;
+            display: none;
         }
 
         .btn-danger:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #991b1b;
         }
 
         .btn-danger:active::before {
-            height: 2px;
-            bottom: -2px;
+            display: none;
+        }
+
+        /* Missing Classes from App.css */
+        .btn-teal {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: white;
+            background-color: #14b8a6;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 0 #0f766e;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            transform: translateY(0);
+        }
+
+        .btn-teal:hover {
+            background-color: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #0f766e;
+        }
+
+        .btn-teal:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #0f766e;
+        }
+
+        .btn-success {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: white;
+            background-color: #16a34a;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 0 #166534;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            transform: translateY(0);
+        }
+
+        .btn-success:hover {
+            background-color: #15803d;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #166534;
+        }
+
+        .btn-success:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #166534;
+        }
+
+        .btn-dark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: white;
+            background-color: #1f2937;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 0 #111827;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            transform: translateY(0);
+        }
+
+        .btn-dark:hover {
+            background-color: #111827;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #111827;
+        }
+
+        .btn-dark:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #111827;
+        }
+
+        .btn-purple {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: white;
+            background-color: #9333ea;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 0 #7e22ce;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            transform: translateY(0);
+        }
+
+        .btn-purple:hover {
+            background-color: #7e22ce;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #7e22ce;
+        }
+
+        .btn-purple:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #7e22ce;
         }
 
         .btn-sm {
@@ -982,6 +1077,7 @@
         </div>
     @endauth
     @include('components.notifications')
+    @include('components.confirm-modal')
 </body>
 
 </html>

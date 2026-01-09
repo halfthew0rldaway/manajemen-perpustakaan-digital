@@ -91,6 +91,48 @@
         transform: translateY(4px);
     }
 
+    .btn-teal {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-teal-500 text-white font-bold rounded-xl hover:bg-teal-600 transition-all transform hover:-translate-y-1 active:translate-y-0;
+        box-shadow: 0 6px 0 #0f766e;
+    }
+
+    .btn-teal:hover {
+        box-shadow: 0 8px 0 #0f766e;
+    }
+
+    .btn-teal:active {
+        box-shadow: 0 2px 0 #0f766e;
+        transform: translateY(4px);
+    }
+
+    .btn-dark {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-gray-800 text-white font-bold rounded-xl hover:bg-gray-900 transition-all transform hover:-translate-y-1 active:translate-y-0;
+        box-shadow: 0 6px 0 #1f2937;
+    }
+
+    .btn-dark:hover {
+        box-shadow: 0 8px 0 #1f2937;
+    }
+
+    .btn-dark:active {
+        box-shadow: 0 2px 0 #1f2937;
+        transform: translateY(4px);
+    }
+
+    .btn-purple {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700 transition-all transform hover:-translate-y-1 active:translate-y-0;
+        box-shadow: 0 6px 0 #7e22ce;
+    }
+
+    .btn-purple:hover {
+        box-shadow: 0 8px 0 #7e22ce;
+    }
+
+    .btn-purple:active {
+        box-shadow: 0 2px 0 #7e22ce;
+        transform: translateY(4px);
+    }
+
     .btn-sm {
         @apply px-4 py-2 text-sm;
     }
