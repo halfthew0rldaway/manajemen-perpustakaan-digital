@@ -7,6 +7,8 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\UserController;
 
 // Root route - redirect based on auth status
 Route::get('/', function () {
@@ -42,7 +44,20 @@ Route::middleware('auth')->group(function () {
     // Books
     Route::resource('books', BookController::class);
 
+    // Members (admin & petugas can view/create, admin can delete/toggle)
+    Route::resource('members', MemberController::class);
+    Route::post('/members/{member}/toggle-status', [MemberController::class, 'toggleStatus'])
+        ->name('members.toggle-status')
+        ->middleware('admin');
+
     // Loans
     Route::resource('loans', LoanController::class);
     Route::post('/loans/{loan}/return', [LoanController::class, 'return'])->name('loans.return');
+
+    // User Management (admin only)
+    Route::middleware('admin')->group(function () {
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::post('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
+            ->name('users.toggle-status');
+    });
 });

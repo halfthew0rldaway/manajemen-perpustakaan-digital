@@ -5,83 +5,79 @@
 
 @section('content')
     <div class="space-y-8">
-        <!-- Statistics Cards - 60% white background, 30% slate, 10% accent colors -->
+        <!-- Statistics Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Books -->
-            <div
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6 hover:border-sky-400 transition-all duration-200">
+            <div class="card" style="padding: 1.5rem;">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-sky-500 rounded-lg flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: var(--accent);">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Buku</p>
-                <p class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $totalBooks }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Koleksi perpustakaan</p>
+                <p class="text-sm font-medium mb-1" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">Total Buku</p>
+                <p class="text-3xl font-bold mb-2" style="color: var(--text-primary); font-family: 'Source Serif 4', Georgia, serif;">{{ $totalBooks }}</p>
+                <p class="text-xs" style="color: var(--text-muted); font-family: 'Inter', sans-serif;">Koleksi perpustakaan</p>
             </div>
 
             <!-- Total Users -->
-            <div
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6 hover:border-sky-400 transition-all duration-200">
+            <div class="card" style="padding: 1.5rem;">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-sky-500 rounded-lg flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-blue-500 dark:bg-blue-600">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Pengguna</p>
-                <p class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $totalUsers }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Anggota terdaftar</p>
+                <p class="text-sm font-medium mb-1" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">Anggota Aktif</p>
+                <p class="text-3xl font-bold mb-2" style="color: var(--text-primary); font-family: 'Source Serif 4', Georgia, serif;">{{ $totalMembers }}</p>
+                <p class="text-xs" style="color: var(--text-muted); font-family: 'Inter', sans-serif;">Anggota terdaftar</p>
             </div>
 
             <!-- Active Loans -->
-            <div
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6 hover:border-teal-400 transition-all duration-200">
+            <div class="card" style="padding: 1.5rem;">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-emerald-500 dark:bg-emerald-600">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Peminjaman Aktif</p>
-                <p class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $activeLoans }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Sedang dipinjam</p>
+                <p class="text-sm font-medium mb-1" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">Peminjaman Aktif</p>
+                <p class="text-3xl font-bold mb-2" style="color: var(--text-primary); font-family: 'Source Serif 4', Georgia, serif;">{{ $activeLoans }}</p>
+                <p class="text-xs" style="color: var(--text-muted); font-family: 'Inter', sans-serif;">Sedang dipinjam</p>
             </div>
 
             <!-- Overdue Loans -->
-            <div
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6 hover:border-pink-400 transition-all duration-200">
+            <div class="card" style="padding: 1.5rem;">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: var(--destructive);">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Terlambat</p>
-                <p class="text-3xl font-bold text-pink-600 mb-2">{{ $overdueLoans }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Melewati jatuh tempo</p>
+                <p class="text-sm font-medium mb-1" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">Terlambat</p>
+                <p class="text-3xl font-bold mb-2" style="color: var(--destructive); font-family: 'Source Serif 4', Georgia, serif;">{{ $overdueLoans }}</p>
+                <p class="text-xs" style="color: var(--text-muted); font-family: 'Inter', sans-serif;">Melewati jatuh tempo</p>
             </div>
         </div>
 
         <!-- Charts -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Tren Peminjaman (7 Hari Terakhir)</h3>
+            <div class="card" style="padding: 1.5rem;">
+                <h3 class="heading" style="font-size: 1.125rem; margin-bottom: 1rem;">Tren Peminjaman (7 Hari Terakhir)</h3>
                 <div class="relative h-64">
                     <canvas id="loanChart"></canvas>
                 </div>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Populasi Buku per Kategori</h3>
+            <div class="card" style="padding: 1.5rem;">
+                <h3 class="heading" style="font-size: 1.125rem; margin-bottom: 1rem;">Populasi Buku per Kategori</h3>
                 <div class="relative h-64">
                     <canvas id="categoryChart"></canvas>
                 </div>
@@ -91,38 +87,36 @@
         <!-- Content Sections -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Recent Loans -->
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700">
-                <div class="px-6 py-4 border-b-2 border-gray-100 dark:border-gray-700 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Peminjaman Terbaru</h2>
-                    <a href="{{ route('loans.index') }}" class="text-sm text-sky-600 hover:text-sky-600 font-semibold">
+            <div class="card">
+                <div class="card-header flex items-center justify-between">
+                    <h2 class="heading" style="font-size: 1.125rem;">Peminjaman Terbaru</h2>
+                    <a href="{{ route('loans.index') }}" class="text-sm font-semibold" style="color: var(--accent); font-family: 'Inter', sans-serif;">
                         Lihat Semua →
                     </a>
                 </div>
-                <div class="p-6">
+                <div class="card-body">
                     @if($recentLoans->count() > 0)
                         <div class="space-y-3">
                             @foreach($recentLoans as $loan)
-                                <div
-                                    class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-sky-400 transition-colors duration-200">
+                                <div class="flex items-center justify-between p-4 rounded-lg" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
                                     <div class="flex items-center space-x-3 flex-1 min-w-0">
-                                        <div class="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: var(--accent);">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                             </svg>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="font-semibold text-gray-900 dark:text-white truncate text-sm">
+                                            <p class="font-semibold truncate text-sm" style="color: var(--text-primary); font-family: 'Inter', sans-serif;">
                                                 {{ $loan->book->title }}</p>
-                                            <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ $loan->user->name }}</p>
+                                            <p class="text-xs truncate" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">{{ $loan->member?->name ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="text-right ml-4 flex-shrink-0">
-                                        <span
-                                            class="inline-block px-2 py-1 rounded text-xs font-semibold {{ $loan->status === 'active' ? 'bg-teal-100 text-teal-700' : 'bg-gray-200 text-gray-700' }}">
+                                        <span class="badge">
                                             {{ $loan->status === 'active' ? 'Aktif' : 'Selesai' }}
                                         </span>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        <p class="text-xs mt-1" style="color: var(--text-muted); font-family: 'Inter', sans-serif;">
                                             {{ $loan->loan_date->format('d M Y') }}</p>
                                     </div>
                                 </div>
@@ -130,49 +124,46 @@
                         </div>
                     @else
                         <div class="text-center py-12">
-                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color: var(--bg-primary);">
+                                <svg class="w-8 h-8" style="color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
-                            <p class="text-gray-500 dark:text-gray-400 font-medium">Belum ada peminjaman</p>
+                            <p style="color: var(--text-muted); font-family: 'Inter', sans-serif;" class="font-medium">Belum ada peminjaman</p>
                         </div>
                     @endif
                 </div>
             </div>
 
             <!-- Low Stock Books -->
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700">
-                <div class="px-6 py-4 border-b-2 border-gray-100 dark:border-gray-700 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Buku Stok Rendah</h2>
-                    <a href="{{ route('books.index') }}" class="text-sm text-sky-600 hover:text-sky-600 font-semibold">
+            <div class="card">
+                <div class="card-header flex items-center justify-between">
+                    <h2 class="heading" style="font-size: 1.125rem;">Buku Stok Rendah</h2>
+                    <a href="{{ route('books.index') }}" class="text-sm font-semibold" style="color: var(--accent); font-family: 'Inter', sans-serif;">
                         Lihat Semua →
                     </a>
                 </div>
-                <div class="p-6">
+                <div class="card-body">
                     @if($lowStockBooks->count() > 0)
                         <div class="space-y-3">
                             @foreach($lowStockBooks as $book)
-                                <div
-                                    class="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-amber-400 transition-colors duration-200">
+                                <div class="flex items-center justify-between p-4 rounded-lg" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
                                     <div class="flex items-center space-x-3 flex-1 min-w-0">
-                                        <div
-                                            class="w-10 h-10 {{ $book->stock <= 1 ? 'bg-pink-500' : 'bg-amber-400' }} rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 {{ $book->stock <= 1 ? 'bg-rose-500 dark:bg-rose-600' : 'bg-amber-500 dark:bg-amber-600' }}">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                             </svg>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="font-semibold text-gray-900 dark:text-white truncate text-sm">
+                                            <p class="font-semibold truncate text-sm" style="color: var(--text-primary); font-family: 'Inter', sans-serif;">
                                                 {{ $book->title }}</p>
-                                            <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ $book->author }}</p>
+                                            <p class="text-xs truncate" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">{{ $book->author }}</p>
                                         </div>
                                     </div>
                                     <div class="ml-4 flex-shrink-0">
-                                        <span
-                                            class="inline-block px-2 py-1 rounded text-xs font-bold {{ $book->stock <= 1 ? 'bg-pink-100 text-pink-700' : 'bg-amber-100 text-amber-700' }}">
+                                        <span class="badge {{ $book->stock <= 1 ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' }}">
                                             Stok: {{ $book->stock }}
                                         </span>
                                     </div>
@@ -181,21 +172,21 @@
                         </div>
 
                         @if($outOfStockBooks > 0)
-                            <div class="mt-4 p-3 bg-red-50 border-l-4 border-pink-400 rounded">
-                                <p class="text-sm font-semibold text-pink-600">
+                            <div class="mt-4 p-3 rounded bg-rose-50 dark:bg-rose-900/20 border-l-3" style="border-left: 3px solid #f43f5e;">
+                                <p class="text-sm font-semibold text-rose-700 dark:text-rose-400" style="font-family: 'Inter', sans-serif;">
                                     {{ $outOfStockBooks }} buku habis stok
                                 </p>
                             </div>
                         @endif
                     @else
                         <div class="text-center py-12">
-                            <div class="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-emerald-500 dark:bg-emerald-600">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <p class="text-gray-500 dark:text-gray-400 font-medium">Semua buku stok aman</p>
+                            <p style="color: var(--text-muted); font-family: 'Inter', sans-serif;" class="font-medium">Semua buku stok aman</p>
                         </div>
                     @endif
                 </div>
@@ -205,52 +196,49 @@
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <a href="{{ route('books.create') }}"
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6 hover:border-sky-500 hover:shadow-lg transition-all duration-200 group">
+                class="card p-6 transition-all duration-200 group hover:border-teal-500 dark:hover:border-teal-600" style="cursor: pointer;">
                 <div class="flex items-center space-x-4">
-                    <div
-                        class="w-12 h-12 bg-sky-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style="background-color: var(--accent);">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
                     </div>
                     <div>
-                        <p class="font-bold text-gray-900 dark:text-white">Tambah Buku</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Tambah buku baru</p>
+                        <p class="font-bold" style="color: var(--text-primary); font-family: 'Inter', sans-serif;">Tambah Buku</p>
+                        <p class="text-sm" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">Tambah buku baru</p>
                     </div>
                 </div>
             </a>
 
             <a href="{{ route('loans.create') }}"
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6 hover:border-teal-500 hover:shadow-lg transition-all duration-200 group">
+                class="card p-6 transition-all duration-200 group hover:border-blue-500 dark:hover:border-blue-600" style="cursor: pointer;">
                 <div class="flex items-center space-x-4">
-                    <div
-                        class="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110 bg-blue-500 dark:bg-blue-600">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="font-bold text-gray-900 dark:text-white">Pinjam Buku</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Catat peminjaman</p>
+                        <p class="font-bold" style="color: var(--text-primary); font-family: 'Inter', sans-serif;">Pinjam Buku</p>
+                        <p class="text-sm" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">Catat peminjaman</p>
                     </div>
                 </div>
             </a>
 
             <a href="{{ route('reports.daily') }}"
-                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border-2 border-gray-100 dark:border-gray-700 p-6 hover:border-orange-400 hover:shadow-lg transition-all duration-200 group">
+                class="card p-6 transition-all duration-200 group hover:border-violet-500 dark:hover:border-violet-600" style="cursor: pointer;">
                 <div class="flex items-center space-x-4">
-                    <div
-                        class="w-12 h-12 bg-orange-400 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110 bg-violet-500 dark:bg-violet-600">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="font-bold text-gray-900 dark:text-white">Laporan Harian</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Lihat laporan</p>
+                        <p class="font-bold" style="color: var(--text-primary); font-family: 'Inter', sans-serif;">Laporan Harian</p>
+                        <p class="text-sm" style="color: var(--text-secondary); font-family: 'Inter', sans-serif;">Lihat laporan</p>
                     </div>
                 </div>
             </a>
@@ -268,9 +256,10 @@
             const categoryLabels = {!! json_encode($categoryChartLabels) !!};
             const categoryData = {!! json_encode($categoryChartData) !!};
 
-            // Helper to get color based on mode
-            const getTextColor = () => document.documentElement.classList.contains('dark') ? '#cbd5e1' : '#64748b';
-            const getGridColor = () => document.documentElement.classList.contains('dark') ? '#374151' : '#E5E7EB';
+            // Get CSS variable colors
+            const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+            const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim();
+            const isDark = document.documentElement.classList.contains('dark');
 
             // 1. Loan Trend Chart
             const ctxLoan = document.getElementById('loanChart').getContext('2d');
@@ -281,16 +270,16 @@
                     datasets: [{
                         label: 'Jumlah Peminjaman',
                         data: loanData,
-                        borderColor: '#0ea5e9', // Sky-500
-                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
-                        borderWidth: 3,
+                        borderColor: accentColor,
+                        backgroundColor: accentColor + '20',
+                        borderWidth: 2,
                         tension: 0.4,
                         fill: true,
-                        pointBackgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#fff',
-                        pointBorderColor: '#0ea5e9',
+                        pointBackgroundColor: accentColor,
+                        pointBorderColor: accentColor,
                         pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
+                        pointRadius: 3,
+                        pointHoverRadius: 5
                     }]
                 },
                 options: {
@@ -305,14 +294,18 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                precision: 0
+                                precision: 0,
+                                color: isDark ? '#A9B4C2' : '#6B7280'
                             },
                             grid: {
-                                color: document.documentElement.classList.contains('dark') ? '#334155' : '#e2e8f0',
+                                color: borderColor,
                                 borderDash: [2, 2]
                             }
                         },
                         x: {
+                            ticks: {
+                                color: isDark ? '#A9B4C2' : '#6B7280'
+                            },
                             grid: {
                                 display: false
                             }
@@ -321,22 +314,24 @@
                 }
             });
 
-            // 2. Category Distribution Chart
+            // 2. Category Distribution Chart - Using varied but calm colors
             const ctxCategory = document.getElementById('categoryChart').getContext('2d');
+            const categoryColors = [
+                '#3B8E91', // Teal (accent)
+                '#3B82F6', // Blue
+                '#10B981', // Emerald
+                '#8B5CF6', // Violet
+                '#F59E0B', // Amber
+                '#6B7280'  // Gray
+            ];
+
             new Chart(ctxCategory, {
                 type: 'doughnut',
                 data: {
                     labels: categoryLabels,
                     datasets: [{
                         data: categoryData,
-                        backgroundColor: [
-                            '#0ea5e9', // Sky
-                            '#14b8a6', // Teal
-                            '#f43f5e', // Rose
-                            '#f59e0b', // Amber
-                            '#8b5cf6', // Violet
-                            '#64748b'  // Slate
-                        ],
+                        backgroundColor: categoryColors,
                         borderWidth: 0
                     }]
                 },
@@ -348,7 +343,11 @@
                             position: 'right',
                             labels: {
                                 usePointStyle: true,
-                                boxWidth: 6
+                                boxWidth: 6,
+                                color: isDark ? '#A9B4C2' : '#6B7280',
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
                             }
                         }
                     },

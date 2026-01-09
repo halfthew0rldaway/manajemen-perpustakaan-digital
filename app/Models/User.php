@@ -48,19 +48,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all loans for this user
+     * Get all loans processed by this petugas
      */
-    public function loans()
+    public function loansProcessed()
     {
-        return $this->hasMany(Loan::class);
-    }
-
-    /**
-     * Get active loans for this user
-     */
-    public function activeLoans()
-    {
-        return $this->hasMany(Loan::class)->where('status', 'active');
+        return $this->hasMany(Loan::class, 'petugas_id');
     }
 
     /**
@@ -72,19 +64,18 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user can borrow more books
-     * Maximum 4 active loans
+     * Check if user is petugas
      */
-    public function canBorrowMore()
+    public function isPetugas()
     {
-        return $this->activeLoans()->count() < 4;
+        return $this->role === 'petugas';
     }
 
     /**
-     * Get number of active loans
+     * Scope to get only active users
      */
-    public function getActiveLoanCountAttribute()
+    public function scopeActive($query)
     {
-        return $this->activeLoans()->count();
+        return $query->where('is_active', true);
     }
 }

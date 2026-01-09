@@ -14,6 +14,7 @@ class Book extends Model
         'publication_year',
         'isbn',
         'category_id', // Changed from category string to relation
+        'shelf_location',
         'description',
         'stock',
     ];

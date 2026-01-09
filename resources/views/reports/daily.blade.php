@@ -22,10 +22,8 @@
                     <input type="date" name="date" id="date" value="{{ $date }}"
                         class="w-full px-4 py-2 sm:py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-white">
                 </div>
-                <button type="submit"
-                    class="bg-sky-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    style="border-bottom: 3px solid #0284c7;">
-                    <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button type="submit" class="btn-primary inline-flex items-center">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>Tampilkan

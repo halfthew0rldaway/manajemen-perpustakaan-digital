@@ -36,11 +36,63 @@
     }
 
     .btn-primary {
-        @apply inline-flex items-center justify-center px-6 py-3 bg-sky-500 text-white font-bold rounded-xl hover:bg-sky-600 transition-all shadow-lg hover:shadow-sky-500/30 transform hover:-translate-y-0.5 border-b-4 border-sky-700 active:border-b-0 active:translate-y-0.5 active:shadow-none;
+        @apply inline-flex items-center justify-center px-6 py-3 bg-sky-500 text-white font-bold rounded-xl hover:bg-sky-600 transition-all transform hover:-translate-y-1 active:translate-y-0;
+        box-shadow: 0 6px 0 #0369a1;
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 8px 0 #0369a1;
+    }
+
+    .btn-primary:active {
+        box-shadow: 0 2px 0 #0369a1;
+        transform: translateY(4px);
     }
 
     .btn-secondary {
-        @apply inline-flex items-center justify-center px-6 py-3 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-all shadow-md hover:shadow-lg border-b-4 border-gray-300 dark:border-gray-600 active:border-b-0 active:translate-y-0.5 active:shadow-none;
+        @apply inline-flex items-center justify-center px-6 py-3 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-all transform hover:-translate-y-1 active:translate-y-0;
+        box-shadow: 0 6px 0 #4b5563;
+    }
+
+    .btn-secondary:hover {
+        box-shadow: 0 8px 0 #4b5563;
+    }
+
+    .btn-secondary:active {
+        box-shadow: 0 2px 0 #4b5563;
+        transform: translateY(4px);
+    }
+
+    .btn-danger {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all transform hover:-translate-y-1 active:translate-y-0;
+        box-shadow: 0 6px 0 #991b1b;
+    }
+
+    .btn-danger:hover {
+        box-shadow: 0 8px 0 #991b1b;
+    }
+
+    .btn-danger:active {
+        box-shadow: 0 2px 0 #991b1b;
+        transform: translateY(4px);
+    }
+
+    .btn-success {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all transform hover:-translate-y-1 active:translate-y-0;
+        box-shadow: 0 6px 0 #166534;
+    }
+
+    .btn-success:hover {
+        box-shadow: 0 8px 0 #166534;
+    }
+
+    .btn-success:active {
+        box-shadow: 0 2px 0 #166534;
+        transform: translateY(4px);
+    }
+
+    .btn-sm {
+        @apply px-4 py-2 text-sm;
     }
 
     .card {

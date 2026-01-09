@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Loan extends Model
 {
     protected $fillable = [
-        'user_id',
+        'member_id',
+        'petugas_id',
         'book_id',
         'loan_date',
         'due_date',
@@ -24,11 +25,19 @@ class Loan extends Model
     ];
 
     /**
-     * Get the user who borrowed the book
+     * Get the member who borrowed the book
      */
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
+    }
+
+    /**
+     * Get the petugas who processed this loan
+     */
+    public function petugas()
+    {
+        return $this->belongsTo(User::class, 'petugas_id');
     }
 
     /**

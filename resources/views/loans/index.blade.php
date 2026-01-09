@@ -35,17 +35,19 @@
                         </option>
                     </select>
                 </div>
-                <div class="flex-1 min-w-[200px]">
-                    <select name="user_id"
-                        class="w-full px-4 py-2 sm:py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-white">
-                        <option value="">Semua Pengguna</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
-                                {{ $user->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                @if(auth()->user()->isAdmin())
+                    <div class="flex-1 min-w-[200px]">
+                        <select name="petugas_id"
+                            class="w-full px-4 py-2 sm:py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-400 bg-white dark:bg-slate-700 text-gray-900 dark:text-white">
+                            <option value="">Semua Petugas</option>
+                            @foreach($petugas as $p)
+                                <option value="{{ $p->id }}" {{ request('petugas_id') == $p->id ? 'selected' : '' }}>
+                                    {{ $p->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
                 <button type="submit"
                     class="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     style="border-bottom: 3px solid #1f2937;">
@@ -55,7 +57,7 @@
                     </svg>
                     Filter
                 </button>
-                @if(request('status') || request('user_id'))
+                @if(request('status') || request('petugas_id') || request('member_id'))
                     <a href="{{ route('loans.index') }}"
                         class="bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-slate-600 transition-all shadow-md hover:shadow-lg border-2 border-gray-300 dark:border-gray-600 hover:border-gray-400 transform hover:-translate-y-0.5"
                         style="border-bottom: 3px solid #6b7280;">
@@ -108,8 +110,10 @@
                             <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition">
                                 <td class="px-6 py-4">
                                     <div>
-                                        <p class="font-medium text-gray-900 dark:text-white">{{ $loan->user->name }}</p>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $loan->user->email }}</p>
+                                        <p class="font-medium text-gray-900 dark:text-white">{{ $loan->member?->name ?? 'N/A' }}
+                                        </p>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $loan->member?->phone ?? '-' }}
+                                        </p>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">

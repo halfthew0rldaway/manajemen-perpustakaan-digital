@@ -38,7 +38,7 @@
 </style>
 
 <script>
-    // Notification System
+    // Notification System using Design System Colors
     function showNotification(message, type = 'success', duration = 5000) {
         const container = document.getElementById('notification-container');
         if (!container) return;
@@ -46,11 +46,12 @@
         const notification = document.createElement('div');
         notification.className = 'notification';
 
-        const colors = {
-            success: 'bg-teal-500',
-            error: 'bg-pink-500',
-            warning: 'bg-amber-500',
-            info: 'bg-sky-500'
+        // Use CSS variables for colors
+        const styles = {
+            success: 'background-color: var(--accent); color: white;',
+            error: 'background-color: var(--destructive); color: white;',
+            warning: 'background-color: var(--accent); color: white;',
+            info: 'background-color: var(--accent); color: white;'
         };
 
         const icons = {
@@ -61,14 +62,14 @@
         };
 
         notification.innerHTML = `
-            <div class="${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
+            <div style="${styles[type]} font-family: 'Inter', sans-serif;" class="px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
                 <div class="flex-shrink-0">
                     ${icons[type]}
                 </div>
                 <div class="flex-1 text-sm font-medium">
                     ${message}
                 </div>
-                <button onclick="removeNotification(this.parentElement.parentElement)" class="flex-shrink-0 hover:bg-white/20 rounded p-1 transition-colors">
+                <button onclick="removeNotification(this.parentElement.parentElement)" class="flex-shrink-0 hover:opacity-70 rounded p-1 transition-opacity">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>

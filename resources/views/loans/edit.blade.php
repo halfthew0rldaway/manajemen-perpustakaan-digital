@@ -22,7 +22,8 @@
                     <div>
                         <h3 class="text-sm font-bold text-sky-800 dark:text-sky-300 mb-2">Detail Peminjaman</h3>
                         <div class="text-sm text-sky-700 dark:text-sky-200 space-y-1">
-                            <p><span class="font-semibold">Peminjam:</span> {{ $loan->user->name }}</p>
+                            <p><span class="font-semibold">Anggota:</span> {{ $loan->member->name }}
+                                ({{ $loan->member->nim_nis }})</p>
                             <p><span class="font-semibold">Buku:</span> {{ $loan->book->title }}</p>
                         </div>
                     </div>

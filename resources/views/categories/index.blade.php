@@ -10,8 +10,7 @@
                     pengelompokan buku</p>
             </div>
             <a href="{{ route('categories.create') }}"
-                class="w-full sm:w-auto bg-sky-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center"
-                style="border-bottom: 4px solid #0284c7;">
+                class="btn-primary w-full sm:w-auto inline-flex items-center justify-center">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
@@ -68,16 +67,13 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                     <div class="flex justify-center gap-2">
                                         <a href="{{ route('categories.edit', $category) }}"
-                                            class="inline-flex items-center px-3 py-1.5 bg-teal-500 text-white rounded-md font-medium hover:bg-teal-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                                            style="border-bottom: 2px solid #0d9488;">Edit</a>
+                                            class="btn-secondary btn-sm">Edit</a>
                                         <form action="{{ route('categories.destroy', $category) }}" method="POST"
                                             class="inline-block"
                                             onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
-                                                class="inline-flex items-center px-3 py-1.5 bg-pink-500 text-white rounded-md font-medium hover:bg-pink-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                                                style="border-bottom: 2px solid #db2777;">Hapus</button>
+                                            <button type="submit" class="btn-danger btn-sm">Hapus</button>
                                         </form>
                                     </div>
                                 </td>

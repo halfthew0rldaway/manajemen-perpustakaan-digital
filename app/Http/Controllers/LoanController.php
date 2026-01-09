@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Loan;
+use App\Models\Member;
+use App\Models\Book;
+use App\Models\User;
 
 class LoanController extends Controller
 {
@@ -11,22 +15,35 @@ class LoanController extends Controller
      */
     public function index(Request $request)
     {
-        $query = \App\Models\Loan::with(['user', 'book']);
+        $query = Loan::with(['member', 'petugas', 'book']);
+
+        // For petugas: only show their own loans
+        if (auth()->user()->isPetugas()) {
+            $query->where('petugas_id', auth()->id());
+        }
 
         // Filter by status
         if ($request->has('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter by user
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
+        // Filter by petugas (admin only)
+        if ($request->has('petugas_id') && auth()->user()->isAdmin()) {
+            $query->where('petugas_id', $request->petugas_id);
+        }
+
+        // Filter by member
+        if ($request->has('member_id')) {
+            $query->where('member_id', $request->member_id);
         }
 
         $loans = $query->latest()->paginate(15);
-        $users = \App\Models\User::all();
 
-        return view('loans.index', compact('loans', 'users'));
+        // For admin: show all petugas for filter
+        $petugas = auth()->user()->isAdmin() ? User::where('role', 'petugas')->get() : collect();
+        $members = Member::active()->get();
+
+        return view('loans.index', compact('loans', 'petugas', 'members'));
     }
 
     /**
@@ -34,10 +51,10 @@ class LoanController extends Controller
      */
     public function create()
     {
-        $books = \App\Models\Book::where('stock', '>', 0)->get();
-        $users = \App\Models\User::all();
+        $books = Book::where('stock', '>', 0)->get();
+        $members = Member::active()->get();
 
-        return view('loans.create', compact('books', 'users'));
+        return view('loans.create', compact('books', 'members'));
     }
 
     /**
@@ -46,19 +63,26 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'member_id' => 'required|exists:members,id',
             'book_id' => 'required|exists:books,id',
             'loan_date' => 'required|date',
             'due_date' => 'required|date|after:loan_date',
         ]);
 
-        $user = \App\Models\User::findOrFail($validated['user_id']);
-        $book = \App\Models\Book::findOrFail($validated['book_id']);
+        $member = Member::findOrFail($validated['member_id']);
+        $book = Book::findOrFail($validated['book_id']);
 
-        // Check if user can borrow more books (max 4)
-        if (!$user->canBorrowMore()) {
+        // Check if member is active
+        if ($member->status !== 'active') {
             return redirect()->back()
-                ->with('error', 'User sudah mencapai batas maksimal peminjaman (4 buku aktif)!')
+                ->with('error', 'Anggota tidak aktif!')
+                ->withInput();
+        }
+
+        // Check if member can borrow more books (max 4)
+        if (!$member->canBorrowMore()) {
+            return redirect()->back()
+                ->with('error', 'Anggota sudah mencapai batas maksimal peminjaman (4 buku aktif)!')
                 ->withInput();
         }
 
@@ -71,9 +95,10 @@ class LoanController extends Controller
 
         // Use transaction for data integrity
         \DB::transaction(function () use ($validated, $book) {
-            // Create loan
-            \App\Models\Loan::create([
-                'user_id' => $validated['user_id'],
+            // Create loan with petugas_id from authenticated user
+            Loan::create([
+                'member_id' => $validated['member_id'],
+                'petugas_id' => auth()->id(), // Auto-set from logged in user
                 'book_id' => $validated['book_id'],
                 'loan_date' => $validated['loan_date'],
                 'due_date' => $validated['due_date'],
@@ -91,16 +116,22 @@ class LoanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(\App\Models\Loan $loan)
+    public function show(Loan $loan)
     {
-        $loan->load(['user', 'book']);
+        $loan->load(['member', 'petugas', 'book']);
+
+        // Petugas can only view their own loans
+        if (auth()->user()->isPetugas() && $loan->petugas_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
         return view('loans.show', compact('loan'));
     }
 
     /**
      * Process book return
      */
-    public function return(\App\Models\Loan $loan)
+    public function return(Loan $loan)
     {
         if ($loan->status === 'returned') {
             return redirect()->back()
@@ -135,27 +166,37 @@ class LoanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(\App\Models\Loan $loan)
+    public function edit(Loan $loan)
     {
         if ($loan->status === 'returned') {
             return redirect()->route('loans.index')
                 ->with('error', 'Tidak dapat mengedit peminjaman yang sudah dikembalikan!');
         }
 
-        $books = \App\Models\Book::all();
-        $users = \App\Models\User::all();
+        // Petugas can only edit their own loans
+        if (auth()->user()->isPetugas() && $loan->petugas_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
 
-        return view('loans.edit', compact('loan', 'books', 'users'));
+        $books = Book::all();
+        $members = Member::active()->get();
+
+        return view('loans.edit', compact('loan', 'books', 'members'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, \App\Models\Loan $loan)
+    public function update(Request $request, Loan $loan)
     {
         if ($loan->status === 'returned') {
             return redirect()->route('loans.index')
                 ->with('error', 'Tidak dapat mengedit peminjaman yang sudah dikembalikan!');
+        }
+
+        // Petugas can only edit their own loans
+        if (auth()->user()->isPetugas() && $loan->petugas_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
         }
 
         $validated = $request->validate([
@@ -171,11 +212,16 @@ class LoanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(\App\Models\Loan $loan)
+    public function destroy(Loan $loan)
     {
         if ($loan->status === 'active') {
             return redirect()->route('loans.index')
                 ->with('error', 'Tidak dapat menghapus peminjaman yang masih aktif!');
+        }
+
+        // Petugas can only delete their own loans
+        if (auth()->user()->isPetugas() && $loan->petugas_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
         }
 
         $loan->delete();

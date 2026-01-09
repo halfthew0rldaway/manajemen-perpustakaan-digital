@@ -141,12 +141,11 @@
                         <!-- Action Buttons -->
                         <div
                             class="flex flex-col-reverse sm:flex-row gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-                            <a href="{{ route('books.index') }}"
-                                class="w-full sm:w-auto px-6 py-3 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-slate-600 transition-all text-center">
+                            <a href="{{ route('books.index') }}" class="btn-secondary w-full sm:w-auto text-center">
                                 Batal
                             </a>
                             <button type="submit"
-                                class="w-full sm:w-auto px-6 py-3 bg-sky-500 text-white rounded-lg font-semibold hover:bg-sky-600 transition-all shadow-lg hover:shadow-xl inline-flex items-center justify-center">
+                                class="btn-primary w-full sm:w-auto inline-flex items-center justify-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />

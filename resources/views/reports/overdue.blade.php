@@ -164,8 +164,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
                                     <a href="{{ route('loans.show', $loan) }}"
-                                        class="inline-flex items-center px-3 py-1.5 bg-sky-500 text-white text-sm font-bold rounded-lg hover:bg-sky-600 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                                        style="border-bottom: 2px solid #0284c7;">
+                                        class="btn-primary btn-sm inline-flex items-center">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

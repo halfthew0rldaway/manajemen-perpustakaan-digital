@@ -28,13 +28,19 @@
 
                     <dl class="space-y-4">
                         <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Peminjam</dt>
-                            <dd class="text-base font-medium text-gray-900 dark:text-white">{{ $loan->user->name }}</dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Anggota</dt>
+                            <dd class="text-base font-medium text-gray-900 dark:text-white">
+                                {{ $loan->member?->name ?? 'N/A' }}</dd>
                         </div>
 
                         <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</dt>
-                            <dd class="text-base text-gray-900 dark:text-white">{{ $loan->user->email }}</dd>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Telepon</dt>
+                            <dd class="text-base text-gray-900 dark:text-white">{{ $loan->member?->phone ?? '-' }}</dd>
+                        </div>
+
+                        <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Petugas</dt>
+                            <dd class="text-base text-gray-900 dark:text-white">{{ $loan->petugas?->name ?? 'N/A' }}</dd>
                         </div>
 
                         <div class="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
