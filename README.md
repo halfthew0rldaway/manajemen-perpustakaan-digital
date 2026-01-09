@@ -142,7 +142,7 @@ A: Lupa menjalankan migrasi. Coba ketik `php artisan migrate:fresh --seed`.
 
 <div align="center">
 
-**Dibuat oleh wizzy**
+**Dibuat oleh Wisnu Widya Pradana**
 <br>
 _Educational Purpose Only - Selamat Belajar!_ 🚀
 
