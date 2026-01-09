@@ -61,10 +61,24 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <a href="{{ route('users.edit', $user) }}" class="btn-secondary btn-sm" style="width: 105px; text-align: center;">Edit</a>
+                                        <a href="{{ route('users.edit', $user) }}" class="btn-secondary btn-sm inline-flex items-center justify-center" style="width: 105px;">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Edit
+                                        </a>
                                         <form action="{{ route('users.toggle-status', $user) }}" method="POST" class="inline-block">
                                             @csrf
-                                            <button type="submit" class="btn-sm {{ $user->is_active ? 'btn-danger' : 'btn-primary' }}" style="width: 105px; text-align: center;">
+                                            <button type="submit" class="btn-sm {{ $user->is_active ? 'btn-danger' : 'btn-primary' }} inline-flex items-center justify-center" style="width: 105px;">
+                                                @if($user->is_active)
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                    </svg>
+                                                @else
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                @endif
                                                 {{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                                             </button>
                                         </form>

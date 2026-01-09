@@ -5,10 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description"
+        content="Sistem Perpustakaan Digital modern untuk manajemen buku, peminjaman, dan anggota.">
     <title>@yield('title', 'Perpustakaan Digital')</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+
+    <!-- Preconnect for CDNs -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -93,7 +102,11 @@
             --scrollbar-thumb-hover: #2F3F52;
         }
 
-        /* ========== TYPOGRAPHY ========== */
+        /* ========== TYPOGRAPHY & SMOOTH SCROLL ========== */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             font-size: 15px;
@@ -420,6 +433,25 @@
             box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
+        /* 3D Logo Button */
+        .logo-btn {
+            background-color: var(--accent);
+            box-shadow: 0 6px 0 #2A6668;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            transform: translateY(0);
+        }
+
+        .logo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #2A6668;
+        }
+
+        .logo-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2A6668;
+        }
+
         /* ========== FORMS ========== */
         .form-label {
             display: block;
@@ -543,7 +575,12 @@
 
         /* ========== SIDEBAR ========== */
         .sidebar-transition {
-            transition: width 250ms ease;
+            transition-property: width, transform;
+            transition-duration: 400ms;
+            transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: width, transform;
+            /* Force GPU acceleration */
+            transform: translateZ(0); 
         }
 
         /* ========== PRINT STYLES ========== */
@@ -628,6 +665,7 @@
 
 <body class="transition-colors duration-300" x-data="{ 
           sidebarOpen: false, 
+          mobileSidebarOpen: false,
           darkMode: localStorage.getItem('darkMode') === 'true',
           toggleTheme() {
               this.darkMode = !this.darkMode;
@@ -640,6 +678,14 @@
           }
       }"
     x-init="$watch('darkMode', val => val ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark')); if(darkMode) document.documentElement.classList.add('dark');">
+
+    <!-- Mobile Sidebar Overlay -->
+    <div x-show="mobileSidebarOpen" x-transition:enter="transition-opacity ease-linear duration-300"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0" @click="mobileSidebarOpen = false"
+        class="fixed inset-0 bg-gray-900/80 z-40 lg:hidden" style="backdrop-filter: blur(4px);"></div>
+
     <!-- Dark Mode Toggle Floating Button -->
     <div x-data="{
         x: window.innerWidth - 100,
@@ -703,7 +749,7 @@
         <button @mousedown="startDrag($event)" @touchstart="startDrag($event)" @click="if(!hasMoved) toggleTheme()"
             class="w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300 border-2 border-white/20 backdrop-blur-sm group"
             :class="darkMode ? 'bg-slate-800 text-yellow-400 border-slate-600' : 'bg-white text-sky-600 border-sky-100'"
-            title="Toggle Dark Mode">
+            title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
             <!-- Sun Icon (for Dark Mode) -->
             <svg x-show="darkMode" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 rotate-90" x-transition:enter-end="opacity-100 rotate-0"
@@ -729,14 +775,16 @@
     @auth
         <div class="flex h-screen overflow-hidden">
             <!-- Sidebar -->
-            <aside @mouseenter="sidebarOpen = true" @mouseleave="sidebarOpen = false" :class="sidebarOpen ? 'w-64' : 'w-20'"
-                class="sidebar-transition text-white flex flex-col relative z-10"
+            <aside @mouseenter="sidebarOpen = true" @mouseleave="sidebarOpen = false" :class="[
+                                        sidebarOpen ? 'w-64' : 'w-20',
+                                        mobileSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full lg:translate-x-0'
+                                    ]"
+                class="sidebar-transition fixed inset-y-0 left-0 z-50 lg:static lg:flex flex-col text-white transform transition-transform duration-300 lg:transform-none shadow-xl lg:shadow-none h-full"
                 style="background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color);">
                 <!-- Logo & Toggle -->
                 <div class="flex items-center justify-between p-4" style="border-bottom: 1px solid var(--border-color);">
                     <div class="flex items-center space-x-3 overflow-hidden">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
-                            style="background-color: var(--accent);">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center logo-btn" style="">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -846,7 +894,7 @@
                             style="{{ request()->routeIs('reports.*') ? 'background-color: var(--accent-subtle); color: var(--accent);' : 'color: var(--text-primary);' }}"
                             onmouseover="if(!this.classList.contains('active')) this.style.backgroundColor='var(--accent-subtle)'"
                             onmouseout="if(!this.classList.contains('active')) this.style.backgroundColor='transparent'"
-                            :title="!sidebarOpen ? 'Laporan' : ''">
+                            :title="!sidebarOpen ? 'Laporan' : ''" aria-label="Toggle Reports Menu">
                             <div class="flex items-center space-x-3">
                                 <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -861,7 +909,12 @@
                             </svg>
                         </button>
 
-                        <div x-show="open && sidebarOpen" x-transition class="ml-9 mt-2 space-y-1">
+                        <div x-show="open && sidebarOpen" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform -translate-y-2"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-2" class="ml-9 mt-2 space-y-1">
                             <a href="{{ route('reports.daily') }}"
                                 class="block px-3 py-2 text-sm rounded-lg transition-colors"
                                 style="{{ request()->routeIs('reports.daily') ? 'background-color: var(--accent-subtle); color: var(--accent);' : 'color: var(--text-secondary);' }}"
@@ -901,7 +954,8 @@
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="btn-logout space-x-3" :title="!sidebarOpen ? 'Logout' : ''">
+                        <button type="submit" class="btn-logout space-x-3" :title="!sidebarOpen ? 'Logout' : ''"
+                            aria-label="Logout">
                             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -918,6 +972,17 @@
                     style="background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 0.75rem 1.5rem;"
                     class="transition-colors duration-300">
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-0">
+                        <!-- Hamburger Button (Mobile Only) -->
+                        <div class="lg:hidden flex justify-between items-center mb-2">
+                            <button @click="mobileSidebarOpen = true"
+                                class="p-2 -ml-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                aria-label="Open Mobile Menu">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        </div>
                         <!-- Date & Timezones -->
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 lg:gap-6">
                             <!-- Date -->

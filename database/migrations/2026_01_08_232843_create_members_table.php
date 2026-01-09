@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('nim_nis')->unique(); // NIM untuk mahasiswa, NIS untuk siswa
-            $table->string('program_studi_kelas'); // Program Studi atau Kelas
+            $table->string('member_id_number')->unique(); // ID Number (KTP/NIS/NIM/Etc)
+            $table->string('occupation_institution'); // Occupation or Institution
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->text('address')->nullable();

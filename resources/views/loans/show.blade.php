@@ -13,6 +13,10 @@
                 </div>
                 <a href="{{ route('loans.index') }}"
                     class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
                     Kembali
                 </a>
             </div>
@@ -136,13 +140,21 @@
                             onsubmit="return confirmModal(event, 'Apakah Anda yakin ingin mengembalikan buku ini?', 'Konfirmasi Pengembalian')">
                             @csrf
                             <button type="submit"
-                                class="w-full px-4 py-3 bg-teal-500 text-white rounded-lg hover:bg-teal-500 transition font-medium">
+                                class="w-full px-4 py-3 bg-teal-500 text-white rounded-lg hover:bg-teal-500 transition font-medium inline-flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                                 Kembalikan Buku
                             </button>
                         </form>
 
                         <a href="{{ route('loans.edit', $loan) }}"
-                            class="mt-3 block w-full text-center px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition font-medium">
+                            class="mt-3 block w-full text-center px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition font-medium inline-flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
                             Edit Tanggal
                         </a>
                     </div>

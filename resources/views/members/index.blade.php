@@ -113,14 +113,34 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        <a href="{{ route('members.show', $member) }}" class="btn-primary btn-sm" style="width: 105px; text-align: center;">Detail</a>
-                                        <a href="{{ route('members.edit', $member) }}" class="btn-secondary btn-sm" style="width: 105px; text-align: center;">Edit</a>
+                                        <a href="{{ route('members.show', $member) }}" class="btn-primary btn-sm inline-flex items-center justify-center" style="width: 105px;">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Detail
+                                        </a>
+                                        <a href="{{ route('members.edit', $member) }}" class="btn-secondary btn-sm inline-flex items-center justify-center" style="width: 105px;">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Edit
+                                        </a>
                                         @if(auth()->user()->isAdmin())
                                             <form action="{{ route('members.toggle-status', $member) }}" method="POST" class="inline-block">
                                                 @csrf
-                                                <button type="submit" class="btn-sm {{ $member->status === 'active' ? 'btn-danger' : 'btn-primary' }}" style="width: 105px; text-align: center;">
-                                                    {{ $member->status === 'active' ? 'Nonaktifkan' : 'Aktifkan' }}
-                                                </button>
+                                            <button type="submit" class="btn-sm {{ $member->status === 'active' ? 'btn-danger' : 'btn-primary' }} inline-flex items-center justify-center" style="width: 105px;">
+                                                @if($member->status === 'active')
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                    </svg>
+                                                @else
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                @endif
+                                                {{ $member->status === 'active' ? 'Nonaktifkan' : 'Aktifkan' }}
+                                            </button>
                                             </form>
                                         @endif
                                     </div>

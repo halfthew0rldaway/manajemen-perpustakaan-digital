@@ -44,18 +44,27 @@ class DashboardController extends Controller
         // Out of stock books
         $outOfStockBooks = Book::where('stock', 0)->count();
 
-        // CHART DATA 1: Loans Last 7 Days (filtered by role)
+        // CHART DATA 1: Loans Last 7 Days (filtered by role) - Optimized Query
+        $endDate = now();
+        $startDate = now()->subDays(6);
+
+        $loanCounts = Loan::query()
+            ->selectRaw('DATE(loan_date) as date, count(*) as count')
+            ->whereDate('loan_date', '>=', $startDate)
+            ->whereDate('loan_date', '<=', $endDate)
+            ->when($user->isPetugas(), function ($q) use ($user) {
+                $q->where('petugas_id', $user->id);
+            })
+            ->groupBy('date')
+            ->pluck('count', 'date');
+
         $loanChartData = [];
         $loanChartLabels = [];
+
         for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i);
-            $query = Loan::whereDate('loan_date', $date->format('Y-m-d'));
-            if ($user->isPetugas()) {
-                $query->where('petugas_id', $user->id);
-            }
-            $count = $query->count();
-            $loanChartLabels[] = $date->format('D, d M'); // Mon, 01 Jan
-            $loanChartData[] = $count;
+            $date = now()->subDays($i)->format('Y-m-d');
+            $loanChartLabels[] = now()->subDays($i)->format('D, d M');
+            $loanChartData[] = $loanCounts[$date] ?? 0;
         }
 
         // CHART DATA 2: Books per Category

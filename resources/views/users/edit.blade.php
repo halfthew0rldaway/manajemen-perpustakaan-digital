@@ -83,8 +83,21 @@
                         <div class="flex flex-col-reverse sm:flex-row gap-3 pt-6 border-t"
                             style="border-color: var(--border-color);">
                             <a href="{{ route('users.index') }}"
-                                class="btn-secondary w-full sm:w-auto text-center">Batal</a>
-                            <button type="submit" class="btn-primary w-full sm:w-auto">Perbarui Data</button>
+                                class="btn-secondary w-full sm:w-auto inline-flex items-center justify-center text-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                                Batal
+                            </a>
+                            <button type="submit"
+                                class="btn-primary w-full sm:w-auto inline-flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                Perbarui Data
+                            </button>
                         </div>
                     </form>
                 </div>
