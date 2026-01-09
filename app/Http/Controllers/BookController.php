@@ -87,7 +87,7 @@ class BookController extends Controller
             'isbn' => 'nullable|string|unique:books,isbn',
             'category_id' => 'nullable|exists:categories,id', // Update validation
             'description' => 'nullable|string',
-            'stock' => 'required|integer|min:1',
+            'stock' => 'required|integer|min:2',
         ]);
 
         Book::create($validated);
@@ -133,7 +133,7 @@ class BookController extends Controller
             'isbn' => 'nullable|string|unique:books,isbn,' . $book->id,
             'category_id' => 'nullable|exists:categories,id', // Update validation
             'description' => 'nullable|string',
-            'stock' => 'required|integer|min:0',
+            'stock' => 'required|integer|min:2',
         ]);
 
         $book->update($validated);

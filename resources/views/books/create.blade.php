@@ -111,7 +111,7 @@
                                 </label>
                                 <input type="number" name="stock" id="stock" 
                                     class="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 bg-white dark:bg-slate-700 text-gray-900 dark:text-white transition-all"
-                                    value="{{ old('stock', 1) }}" required min="0" placeholder="1">
+                                    value="{{ old('stock', 2) }}" required min="2" placeholder="2">
                                 @error('stock')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
