@@ -78,8 +78,8 @@ Ingin menjalankan di komputer Anda? Ikuti langkah mudah ini:
 ### Langkah Instalasi
 ```bash
 # 1. Clone Repository
-git clone https://github.com/username/perpustakaan-digital.git
-cd perpustakaan-digital
+git clone https://github.com/halfthew0rldaway/manajemen-perpustakaan-digital.git
+cd manajemen-perpustakaan-digital
 
 # 2. Install Backend & Frontend Dependencies
 composer install
