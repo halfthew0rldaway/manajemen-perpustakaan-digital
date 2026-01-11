@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
@@ -80,14 +81,17 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:books,title',
             'author' => 'required|string|max:255',
-            'publisher' => 'nullable|string|max:255',
-            'publication_year' => 'nullable|integer|min:1900|max:' . date('Y'),
-            'isbn' => 'nullable|string|unique:books,isbn',
-            'category_id' => 'nullable|exists:categories,id', // Update validation
+            'publisher' => 'required|string|max:255',
+            'publication_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'isbn' => 'required|string|max:13|unique:books,isbn',
+            'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'stock' => 'required|integer|min:2',
+        ], [
+            'title.unique' => 'Judul buku ini sudah ada dalam sistem.',
+            'isbn.unique' => 'ISBN ini sudah terdaftar dalam sistem.',
         ]);
 
         Book::create($validated);
@@ -126,14 +130,17 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:books,title,' . $book->id,
             'author' => 'required|string|max:255',
-            'publisher' => 'nullable|string|max:255',
-            'publication_year' => 'nullable|integer|min:1900|max:' . date('Y'),
-            'isbn' => 'nullable|string|unique:books,isbn,' . $book->id,
-            'category_id' => 'nullable|exists:categories,id', // Update validation
+            'publisher' => 'required|string|max:255',
+            'publication_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'isbn' => 'required|string|max:13|unique:books,isbn,' . $book->id,
+            'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'stock' => 'required|integer|min:2',
+        ], [
+            'title.unique' => 'Judul buku ini sudah ada dalam sistem.',
+            'isbn.unique' => 'ISBN ini sudah terdaftar dalam sistem.',
         ]);
 
         $book->update($validated);
